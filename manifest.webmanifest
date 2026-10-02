@@ -1,0 +1,30 @@
+{
+  "name": "Kutadgu · Açık Erişimli Akademik Yayın Sistemi",
+  "short_name": "Kutadgu",
+  "description": "Hakemli ve hakemsiz akademik çalışmaların açık erişimle yayımlandığı bağımsız yayın sistemi.",
+  "id": "/",
+  "lang": "tr",
+  "dir": "ltr",
+  "start_url": "/?kaynak=uygulama",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui", "browser"],
+  "orientation": "any",
+  "background_color": "#1b2a4a",
+  "theme_color": "#1b2a4a",
+  "categories": ["education", "books", "news", "productivity"],
+  "prefer_related_applications": false,
+  "icons": [
+    { "src": "/k/tamga.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "/k/tamga-maskable.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" },
+    { "src": "/k/tamga-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/k/tamga-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/k/tamga-512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Çalışmalar", "short_name": "Çalışmalar", "description": "Bütün çalışmaların arşivi", "url": "/yazilar.php" },
+    { "name": "Çalışma gönder", "short_name": "Gönder", "description": "Yeni bir çalışma gönder", "url": "/basvuru.php" },
+    { "name": "Yazar paneli", "short_name": "Yazar", "description": "Kendi çalışmanızı düzenleyin", "url": "/yazar.php" },
+    { "name": "Yayın ilkeleri", "short_name": "İlkeler", "description": "Yayın ve hakemlik kuralları", "url": "/ilkeler.php" }
+  ]
+}

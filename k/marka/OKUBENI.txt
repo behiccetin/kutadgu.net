@@ -1,0 +1,39 @@
+KUTADGU  Kurumsal kimlik dosyalari / Brand assets
+=================================================
+
+Icerik
+  kutadgu-isaret-renkli.*    Acik zeminler icin tam renkli isaret
+  kutadgu-isaret-ters.*      Koyu zeminler icin isaret (kitap ve figur fildisi)
+  kutadgu-isaret-zeminli.*   Lacivert yuvarlak kare zeminli isaret (uygulama simgesi)
+  kutadgu-isaret-daire.*     Lacivert daire icinde isaret
+  kutadgu-isaret-tekrenk.svg Tek renk cizgi surumu (currentColor)
+  kutadgu-isaret-kucuk.svg   16-24 piksel icin sadelestirilmis surum
+  kutadgu-monogram.*         Karninda altin nokta tasiyan A
+  kutadgu-monogram-ters.svg  Koyu zeminler icin monogram
+  simge-*.svg                Alti kavram simgesi (kure, bilgi, yayin, insan,
+                             kilavuz, birlik)
+
+Renkler
+  Lacivert     #1B2A4A     ana kurumsal renk
+  Lacivert koyu#101B31     degrade alt ucu
+  Altin        #C9A227     lacivert ustunde vurgu
+  Altin acik   #E0BB52
+  Koyu altin   #856410     acik zeminde metin olarak kullanilan altin
+  Fildisi      #F5F0E4
+
+Kullanim
+  1. Isaretin oranlari degistirilmez, egilmez, golge ya da anahat eklenmez.
+  2. Cevresinde en az kendi genisliginin altida biri kadar bos alan birakilir.
+  3. En kucuk kullanim 16 pikseldir; bu olcude "kucuk" surum kullanilir.
+  4. Isaret kimlik renkleri disinda bir renge boyanmaz; tek renk gerektiginde
+     "tekrenk" surumu kullanilir.
+  5. Isaret, Kutadgu disinda bir yayin ya da kurumun isareti olarak
+     kullanilamaz; Kutadgu'ya atifta bulunan haber, sunum, tez ve akademik
+     calismalarda serbestce kullanilabilir.
+
+Lisans
+  Bu dosyalar Kutadgu'ya atifta bulunmak icin serbestce kullanilabilir.
+  Isaret bir marka isaretidir; sistemin metinlerini kapsayan CC BY 4.0
+  lisansi isaretin marka olarak kullanimini kapsamaz.
+
+kutadgu.net

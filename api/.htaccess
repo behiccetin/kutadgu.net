@@ -1,0 +1,12 @@
+# /api/* isteklerini index.php'ye yönlendir (PATH_INFO korunur)
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /api/
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteRule ^(.*)$ index.php/$1 [QSA,L]
+</IfModule>
+
+# Veri sızıntısını önle: bu klasörde .json servis edilmesin (veri zaten disarida ama tedbir)
+<FilesMatch "\.(json|jsonl|tmp)$">
+  Require all denied
+</FilesMatch>

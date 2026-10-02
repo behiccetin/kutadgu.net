@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 430" role="img"
+     aria-labelledby="ob-bas ob-ack" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif">
+  <title id="ob-bas">Örnek mezun belgesi: doğrulama kodunun yeri</title>
+  <desc id="ob-ack">e-Devlet'ten alınan mezun belgesinde doğrulama kodu sayfanın sağ üst köşesinde yer alır. Kişisel alanlar bu örnekte gizlenmiştir; sistem bu alanları istemez ve saklamaz.</desc>
+
+  <rect width="640" height="430" rx="10" fill="#ffffff" stroke="#d9d3c6"/>
+
+  <!-- Barkod kodu: vurgulu -->
+  <rect x="400" y="18" width="222" height="30" rx="6" fill="#fbf3e0" stroke="#916511" stroke-width="1.6"/>
+  <text x="511" y="38" text-anchor="middle" font-size="14" font-weight="700"
+        font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#916511">YOKME0XXXX0XXXX0XX</text>
+  <text x="511" y="62" text-anchor="middle" font-size="10.5" font-weight="700" fill="#916511"
+        letter-spacing="0.06em">SİSTEME YAZILACAK TEK ŞEY BUDUR</text>
+
+  <!-- Belge basligi -->
+  <text x="200" y="34" text-anchor="middle" font-size="11" fill="#5c6675">T.C.</text>
+  <text x="200" y="50" text-anchor="middle" font-size="11.5" font-weight="600" fill="#15181d">YÜKSEKÖĞRETİM KURULU BAŞKANLIĞI</text>
+  <text x="200" y="66" text-anchor="middle" font-size="11" fill="#5c6675">ANKARA</text>
+  <text x="200" y="96" text-anchor="middle" font-size="13" font-weight="700" fill="#15181d" letter-spacing="0.08em">MEZUN BELGESİ</text>
+
+  <!-- Alanlar -->
+  <g font-size="11.5">
+    <g fill="#5c6675">
+      <text x="34" y="140">T.C. Kimlik No</text>
+      <text x="34" y="164">Adı Soyadı</text>
+      <text x="34" y="188">Baba Adı</text>
+      <text x="34" y="212">Anne Adı</text>
+      <text x="34" y="236">Doğum Tarihi</text>
+      <text x="34" y="260">Program</text>
+      <text x="34" y="296">Diploma No</text>
+      <text x="34" y="320">Mezuniyet Tarihi</text>
+      <text x="34" y="344">Durum</text>
+    </g>
+    <g fill="#15181d">
+      <text x="196" y="140">:</text><text x="196" y="164">:</text><text x="196" y="188">:</text>
+      <text x="196" y="212">:</text><text x="196" y="236">:</text><text x="196" y="260">:</text>
+      <text x="196" y="296">:</text><text x="196" y="320">:</text><text x="196" y="344">:</text>
+    </g>
+
+    <!-- Gizlenen kisisel alanlar -->
+    <g>
+      <rect x="208" y="129" width="132" height="15" rx="3" fill="#efe9dc"/>
+      <rect x="208" y="153" width="176" height="15" rx="3" fill="#efe9dc"/>
+      <rect x="208" y="177" width="96"  height="15" rx="3" fill="#efe9dc"/>
+      <rect x="208" y="201" width="112" height="15" rx="3" fill="#efe9dc"/>
+      <rect x="208" y="225" width="104" height="15" rx="3" fill="#efe9dc"/>
+      <rect x="208" y="285" width="88"  height="15" rx="3" fill="#efe9dc"/>
+    </g>
+    <g fill="#8b8577" font-size="9.5" letter-spacing="0.04em">
+      <text x="348" y="141">gizlenmiştir</text>
+      <text x="392" y="165">gizlenmiştir</text>
+      <text x="312" y="189">gizlenmiştir</text>
+      <text x="328" y="213">gizlenmiştir</text>
+      <text x="320" y="237">gizlenmiştir</text>
+      <text x="304" y="297">gizlenmiştir</text>
+    </g>
+
+    <!-- Sistemin baktigi tek satir -->
+    <rect x="204" y="248" width="404" height="30" rx="5" fill="#e9f2ec" stroke="#1c6b47" stroke-width="1.2"/>
+    <text x="212" y="260" font-size="10.5" fill="#15181d">... ÜNİVERSİTESİ / SOSYAL BİLİMLER ENSTİTÜSÜ /</text>
+    <text x="212" y="273" font-size="10.5" font-weight="700" fill="#1c6b47">İKTİSAT (DR)</text>
+
+    <text x="208" y="320" fill="#15181d">08.01.2025</text>
+    <text x="208" y="344" font-weight="600" fill="#1c6b47">MEZUNİYET</text>
+  </g>
+
+  <line x1="34" y1="364" x2="606" y2="364" stroke="#e5e0d6"/>
+  <text x="34" y="384" font-size="10.5" fill="#5c6675">Doğrulama adresi:</text>
+  <text x="136" y="384" font-size="10.5" font-family="ui-monospace, Menlo, Consolas, monospace" fill="#1e3a5f">turkiye.gov.tr/belge-dogrulama</text>
+  <text x="34" y="404" font-size="10.5" fill="#5c6675">Editörün baktığı tek soru: programın sonunda</text>
+  <text x="302" y="404" font-size="10.5" font-weight="700" fill="#1c6b47">(DR)</text>
+  <text x="330" y="404" font-size="10.5" fill="#5c6675">yazıyor mu ve durum mezuniyet mi.</text>
+</svg>

@@ -1,0 +1,140 @@
+# =====================================================================
+# ATIF DOSYASI (Citation File Format 1.2.0)
+# ---------------------------------------------------------------------
+# BU DOSYA İKİ YERDE OKUNUR. GitHub deponun sağ sütununda "Cite this
+# repository" düğmesini bu dosyadan üretir; Zenodo ise bir sürüm
+# yayımlandığında yatırdığı kaydın üstverisini buradan alır. Yani
+# yazar listesi, lisans ve başlık iki yerde ayrı ayrı yazılmaz: burada
+# bir kez yazılır.
+#
+# ORCID SAHİPLİĞİ BU DOSYADAN DOĞRULANAMAZ. Numaralar kurucuların kendi
+# bildirdiği kimliklerdir; bu dosyayı yazan taraf onları ORCID'e sorup
+# doğrulayamaz (pub.orcid.org robotlara kapalıdır ve etrafından
+# dolaşılmadı). Doğrulama, kişinin sisteme girip kendi ORCID hesabıyla
+# bağlanmasıyla olur (panel > Hesabım > ORCID) ve o yol numarayı değil
+# SAHİPLİĞİ kanıtlar: kişi ORCID ekranında kendi parolasıyla izin verir.
+# KİMİN DOĞRULADIĞI CANLI SİSTEMDE GÖRÜNÜR, burada değil; panelde
+# "ORCID hesabınızla doğrulandı" yazısı ancak o yoldan çıkar.
+#
+# DEPO ADRESİ, bu makinedeki .git/config'ten okundu; elle yazılmadı.
+# 13 Ağustos 2026'da adres AÇIK DEĞİLDİ (GitHub 404 döndü). Bu yüzden
+# Zenodo'nun GitHub bağlantısı KULLANILMADI: o bağlantı yalnızca herkese
+# açık depoları arşivler. Yatırma elle, kaynak paketi yüklenerek yapıldı.
+# DEPO SONRADAN AÇILIRSA bağlantı kurulabilir; o gün yeni sürümler
+# kendiliğinden yatar ve bu dosya değil, GitHub sürümü tetikler.
+#
+# BAŞ YAPIMCI. Citation File Format'ta yazarlara rol verilemez; şemada
+# böyle bir alan yoktur ve uydurulmuş bir alan hiçbir araç tarafından
+# okunmaz. Bu yüzden baş yapımcılık burada ÜÇ yolla söylenir: yazar
+# listesinin başında durmak, 'contact' alanında yazılı olmak ve özetin
+# son cümlesinde açıkça belirtilmek. Makinece okunan asıl kayıt
+# .zenodo.json'daki contributors -> ProjectLeader satırıdır; ikisi
+# birbirini tekrar eder, çünkü iki dosyayı iki ayrı araç okur.
+#
+# BEŞ ORCID DE YAZILI. Sonuncusu (Mustafa Zihni Tunca) 13 Ağustos 2026'da
+# Behiç tarafından bildirildi ve o güne kadar bilerek boş bırakılmıştı;
+# uydurulmuş bir ORCID, eksik bir ORCID'den kötüdür. Beşinin de sağlama
+# hanesi (ISO 7064 mod 11-2) denetlendi ve tuttu, ama bu YALNIZCA
+# numaranın biçimce geçerli olduğunu gösterir, o kişiye ait olduğunu
+# değil. Sahiplik ancak kişinin panelden kendi ORCID hesabıyla
+# bağlanmasıyla kanıtlanır; kimin bağlandığı panelde görünür.
+# =====================================================================
+cff-version: 1.2.0
+message: "Bu sistemi anarken lütfen aşağıdaki künyeyi kullanın."
+title: "Kutadgu · Açık Erişimli Akademik Yayın Sistemi"
+abstract: >-
+  Kutadgu, hakem raporlarının adıyla yayımlandığı, hiçbir aşamasında
+  ücret alınmayan ve bütün arşivi tek dosyada indirilebilen açık
+  erişimli bir akademik yayın sistemidir. Yazara işlem ücreti,
+  okura abonelik uygulanmaz ve sistemde reklam bulunmaz. Her çalışma
+  kalıcı bir kimlik (Tamga) alır; hakemlik süreci, kararlar ve
+  bekleme süreleri herkese açık olarak yayımlanır. Yazılım AGPL-3.0
+  ile, yayımlanan çalışmalar CC BY 4.0 ile açıktır. Arayüz sekiz dilde
+  çalışır; bunlardan Türkçe ve İngilizce insan gözünden geçmiştir,
+  kalan altısı makine çevirisidir ve her sayfada öyle etiketlenir.
+  Sistemin baş
+  yapımcısı Behiç Çetin'dir: tasarımı ve yazılımın tamamını geliştirmiş,
+  altyapıyı kurmuş ve işletmektedir. Murat Kayalar, Gökhan Kalağan,
+  Mustafa Zihni Tunca ve İbrahim Atilla Acar kurucu kuruldur: yayın
+  ilkelerini, ücret yasağını ve hakemlik ölçütlerini belirlemiş, kurul
+  kararlarıyla sistemin işleyişini yönlendirmişlerdir. Beşi de bu
+  çalışmanın ortak üreticisidir.
+type: software
+version: "1.0.0"
+# DOI'LER 13 AĞUSTOS 2026'DA ALINDI ve iki tanedir.
+#   doi:          KAVRAM DOI'si. Bütün sürümleri kapsar, değişmez ve her
+#                 zaman en son sürüme götürür. Anılacak olan budur.
+#   identifiers:  Yalnız 1.0.0'ı gösteren SÜRÜM DOI'si; yeniden
+#                 üretilebilirlik gerektirdiğinde anılır.
+# Aynı iki numara ayar.php'deki 'doi' bloğunda da yazılıdır ve sistem
+# onu okur. İkisi ayrışırsa sistem bir kimliği, künye başka bir kimliği
+# duyurur; sinama/doi-kapi.php her koşuda ikisini karşılaştırır.
+doi: "10.5281/zenodo.21919023"
+identifiers:
+  - type: doi
+    value: "10.5281/zenodo.21919024"
+    description: "Bu sürümün (1.0.0) DOI'si."
+date-released: "2026-08-13"
+# DİL ALANI DENENDİ VE KALDIRILDI. CITATION.cff 1.2.0 şemasında kök
+# düzeyde 'languages' diye bir alan YOKTUR; yazıldığında cffconvert
+# doğrulaması "Additional properties are not allowed" diyerek dosyayı
+# reddetti. Ölçüm yanlış çıkmadı, YAZAN yanıldı: alanın var olduğu
+# varsayılmıştı. Dil bilgisi bu yüzden özete cümleyle yazıldı; orada
+# hangi dilin insan gözünden geçtiği de söylenebiliyor, oysa bir kod
+# listesi bunu söyleyemezdi.
+license: AGPL-3.0-only
+url: "https://kutadgu.net"
+# DEPO ADRESİ, DEPO AÇILANA KADAR YAZILMAZ.
+# Burada "repository-code: https://github.com/behiccetin/kutadgunet"
+# duruyordu ve o adres herkese 404 dönüyor: depo özel. Bu alanı okuyan
+# taraf insan değil MAKİNEDİR — Zenodo, GitHub'ın atıf kutusu, Zotero
+# ve cffconvert. Yani sistem, ulaşılamayan bir adresi "kaynağın yeri"
+# diye üçüncü taraflara BİLDİRİYORDU. Sitenin kendisi bunu çoktan
+# çözmüştü (ayar.php 'depo_acik' => false; sayfalar bağı hiç basmıyor);
+# eksik kalan yer bu dosyaydı.
+#
+# Kaynağın gerçekten indirilebildiği yer Zenodo kaydıdır ve o kayıt
+# yukarıda 'identifiers' altında DOI olarak zaten yazılı; kaynak zipi
+# oradan herkese açık iniyor. AGPL §13'ün istediği "kaynağın sunulması"
+# bu yolla sağlanıyor.
+#
+# DEPO AÇILDIĞI GÜN İKİ SATIR BİRLİKTE DEĞİŞİR: ayar.php'de
+# 'depo_acik' => true ve buradaki satırın yorumu kalkar. İkisinin
+# birlikte değişmesini sinama/depo-kapi.php ölçer.
+# DEPO AÇILDI (3 Ekim 2026). Açık kaynak ayrı bir depoda, geçmişsiz anlık
+# görüntü olarak durur; GONDER.bat onu siteden ÖNCE günceller.
+repository-code: "https://github.com/behiccetin/kutadgu.net"
+keywords:
+  - open access
+  - scholarly publishing
+  - open peer review
+  - academic journal software
+  - research infrastructure
+  - açık erişim
+  - açık hakemlik
+authors:
+  - family-names: "Çetin"
+    given-names: "Behiç"
+    affiliation: "Burdur Mehmet Akif Ersoy Üniversitesi"
+    orcid: "https://orcid.org/0000-0002-8926-2394"
+  - family-names: "Kayalar"
+    given-names: "Murat"
+    affiliation: "Burdur Mehmet Akif Ersoy Üniversitesi"
+    orcid: "https://orcid.org/0000-0001-8824-5608"
+  - family-names: "Kalağan"
+    given-names: "Gökhan"
+    affiliation: "Balıkesir Üniversitesi"
+    orcid: "https://orcid.org/0000-0001-8296-6316"
+  - family-names: "Tunca"
+    given-names: "Mustafa Zihni"
+    affiliation: "Süleyman Demirel Üniversitesi"
+    orcid: "https://orcid.org/0000-0003-2315-905X"
+  - family-names: "Acar"
+    given-names: "İbrahim Atilla"
+    affiliation: "İzmir Kâtip Çelebi Üniversitesi"
+    orcid: "https://orcid.org/0000-0002-9354-6971"
+contact:
+  - family-names: "Çetin"
+    given-names: "Behiç"
+    affiliation: "Burdur Mehmet Akif Ersoy Üniversitesi"
+    orcid: "https://orcid.org/0000-0002-8926-2394"

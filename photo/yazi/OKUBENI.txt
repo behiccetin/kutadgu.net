@@ -1,0 +1,14 @@
+Bu klasör yazarların metinlerine koyduğu şekil, çizelge ve grafikleri tutar.
+
+NİÇİN VAR. Gönderim formundaki düzenleyici görseli metnin içine data:
+adresiyle gömüyordu; sunucudaki süzgeç (guvenli_html) img/src'de data:
+kabul etmez ve görsel sessizce kayboluyordu. Görsel artık /api/yazar-gorsel
+ucuna yüklenir, buraya dosya olarak yazılır ve metne /photo/yazi/... diye
+girer -- süzgecin kabul ettiği biçim.
+
+KLASÖR DEPODA BOŞ DURUR. Uç gerektiğinde kendisi de oluşturur (mkdir),
+ama sunucuda üst klasör yazılabilir değilse oluşturamaz; bu dosya klasörün
+depoyla birlikte taşınmasını ve yazma izninin baştan verilmesini sağlar.
+
+Buradaki dosyalar YEDEKLENMELİDİR: yayımlanmış bir çalışmanın şekli
+silinirse, o çalışma eksik kalır. Kutadgu, yayımladığı kaydı geri almaz.

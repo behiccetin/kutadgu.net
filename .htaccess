@@ -1,0 +1,183 @@
+# =====================================================================
+#  KUTADGU  ·  kutadgu.net
+#  Sunucu davranışı: hız, kararlılık ve saldırı direnci.
+# =====================================================================
+
+Options -Indexes -MultiViews
+DirectoryIndex index.php index.html
+ServerSignature Off
+
+# ---- Yalnızca kullanılan yöntemler ----
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{REQUEST_METHOD} !^(GET|HEAD|POST|OPTIONS)$
+  RewriteRule ^ - [F,L]
+</IfModule>
+
+# ---- Bakim betikleri web uzerinden acilmaz ----
+# Kurulum betikleri isini bitirince depodan kaldirilir; yine de bir gun
+# yeniden eklenirse diye kural burada duruyor. Kilidin ucuz, unutmanin
+# pahali oldugu yerlerden biri burasi.
+<FilesMatch "^(kur-.*\.php|yedek\.sh|dokum-gorev\.php)$">
+  Require all denied
+</FilesMatch>
+
+# ---- Önbellek: sayfalar taze, varlıklar uzun ömürlü ----
+<IfModule mod_headers.c>
+  # Sayfalar taze gelir. İki dosya bunun dışındadır: /dokum.php ve
+  # /arsiv.php durağan döküm dosyalarını akıtır ve önbellek başlıklarını
+  # (ETag, Last-Modified, max-age) kendileri gönderir. Buradaki "Header
+  # set" kuralı betiğin gönderdiği başlığın ÜSTÜNE yazar; ikisi birden
+  # olursa döküm hiçbir zaman önbelleğe alınmaz ve her indirme yeniden
+  # baştan iner. Bu yüzden ikisi dışarıda bırakıldı.
+  <FilesMatch "^(?!dokum\.php$|arsiv\.php$).+\.(html|php)$">
+    Header set Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
+    Header set Pragma "no-cache"
+    Header set Expires "0"
+  </FilesMatch>
+  <FilesMatch "\.(css|js|mjs|woff|woff2|ttf|otf|eot)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+    Header unset Pragma
+    Header unset Expires
+  </FilesMatch>
+  <FilesMatch "\.(svg|png|jpg|jpeg|gif|webp|avif|ico)$">
+    Header set Cache-Control "public, max-age=86400"
+    Header unset Pragma
+    Header unset Expires
+  </FilesMatch>
+  <FilesMatch "^(sw\.js|manifest\.webmanifest)$">
+    Header set Cache-Control "no-cache, must-revalidate, max-age=0"
+  </FilesMatch>
+
+  # ---- Güvenlik başlıkları ----
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "geolocation=(), microphone=(), camera=(), payment=(), usb=(), interest-cohort=()"
+  Header always set Cross-Origin-Opener-Policy "same-origin"
+  Header always set Cross-Origin-Resource-Policy "same-site"
+  Header always set X-Permitted-Cross-Domain-Policies "none"
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains" env=HTTPS
+  Header always unset X-Powered-By
+  Header unset X-Powered-By
+</IfModule>
+
+# ---- Sıkıştırma ----
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript
+  AddOutputFilterByType DEFLATE application/javascript application/x-javascript application/json
+  AddOutputFilterByType DEFLATE application/xml application/rss+xml image/svg+xml
+  AddOutputFilterByType DEFLATE application/manifest+json
+</IfModule>
+<IfModule mod_brotli.c>
+  AddOutputFilterByType BROTLI_COMPRESS text/html text/plain text/css text/javascript
+  AddOutputFilterByType BROTLI_COMPRESS application/javascript application/json image/svg+xml
+  AddOutputFilterByType BROTLI_COMPRESS application/manifest+json
+</IfModule>
+
+<IfModule mod_mime.c>
+  AddType image/svg+xml .svg
+  AddType font/woff2 .woff2
+  AddType application/json .json
+  AddType application/manifest+json .webmanifest
+</IfModule>
+
+# ---- Veri ve yapılandırma dosyaları web üzerinden okunamaz ----
+<FilesMatch "\.(json|jsonl|log|bak|env|ini|sql|md|yml|yaml|sh|bat|lock|dist|old|orig|save|swp|tpl)$">
+  Require all denied
+</FilesMatch>
+<Files "ayar.php">
+  Require all denied
+</Files>
+<Files "ortak.php">
+  Require all denied
+</Files>
+<FilesMatch "^\.">
+  Require all denied
+</FilesMatch>
+
+<IfModule mod_alias.c>
+  RedirectMatch 404 /\.git
+  RedirectMatch 404 /\.svn
+  RedirectMatch 404 /\.hg
+</IfModule>
+
+<IfModule mod_rewrite.c>
+  # ---- Ortak PHP parçaları doğrudan istenemez ----
+  RewriteRule ^k/.*\.php$ - [F,L]
+
+  # ---- Yaygın tarama ve sömürü denemeleri: hemen kapatılır ----
+  # (WordPress, phpMyAdmin, ortam dosyaları, kabuk yükleme denemeleri)
+  RewriteCond %{REQUEST_URI} (^|/)(wp-admin|wp-includes|wp-content|wp-login|xmlrpc\.php|phpmyadmin|pma|myadmin|adminer|\.env|\.aws|\.ssh|config\.php\.bak|shell|c99|r57|eval-stdin) [NC]
+  RewriteRule ^ - [F,L]
+
+  # ---- Sorgu dizesinde sömürü kalıpları ----
+  RewriteCond %{QUERY_STRING} (base64_encode|base64_decode|\bunion\b.*\bselect\b|\bselect\b.*\bfrom\b|<script|%3Cscript|onerror=|javascript:|\.\./\.\.) [NC]
+  RewriteRule ^ - [F,L]
+
+  # ---- Zararlı tarayıcı ve içerik hırsızı araçları ----
+  # Arama motorları ve akademik dizin robotları engellenmez.
+  RewriteCond %{HTTP_USER_AGENT} (libwww-perl|wget/|curl/|python-requests|zgrab|masscan|nikto|sqlmap|nmap|havij|acunetix|dirbuster|webinspect|httrack|teleport|webcopier|emailcollector|extractorpro) [NC]
+  RewriteRule ^ - [F,L]
+
+  # ---- Boş kullanıcı aracı: yalnızca POST için reddedilir ----
+  RewriteCond %{HTTP_USER_AGENT} ^$
+  RewriteCond %{REQUEST_METHOD} POST
+  RewriteRule ^ - [F,L]
+
+  # ---- Alan adına göre üretilen site haritası ve robots ----
+  RewriteRule ^sitemap\.xml$ /sitemap.php [L]
+  RewriteRule ^robots\.txt$  /robots.php  [L]
+  # Makine okunur lisans (RSL 1.0) ve yapay zekâ okuyucular için
+  # düz metin koşul bildirimi. İkisi de alan adına göre üretilir.
+  RewriteRule ^license\.xml$  /lisans.php [L]
+  RewriteRule ^llms\.txt$    /llms.php   [L]
+
+  # IndexNow anahtar dosyası. Dosya depoda durmaz; ayardaki anahtardan
+  # üretilir (bkz. indexnow.php). Desen dar tutuldu: yalnız onaltılık
+  # ve en az sekiz haneli adlar; sitedeki başka bir .txt bu kurala
+  # takılmasın diye.
+  RewriteRule ^([a-f0-9]{8,128})\.txt$ /indexnow.php?k=$1 [L,QSA]
+
+  # ---- Akademik dizin toplayıcısı (OAI-PMH 2.0) ----
+  # DOAJ, BASE, OpenAIRE, CORE gibi toplayıcılar bu adresi kullanır.
+  RewriteRule ^oai/?$ /oai.php [L,QSA]
+
+  # ---- Paylaşım kartı: /kart/<kimlik>.png ----
+  RewriteRule ^kart/([A-Za-z0-9.\-]+)\.png$ /kart.php?k=$1 [L,QSA]
+
+  # ---- TAMGA çözümleyici ----
+  # Yeni biçim:  /tamga/KTG-2026-00001-4
+  RewriteRule ^tamga/([A-Za-z]{2,6}-[0-9]{4}-[0-9]{4,7}-[0-9Xx])/?$ /yazi.php?doi=$1 [L,QSA]
+  # İlk dönem biçimleri: paylaşılmış hiçbir bağlantı kırılmaz
+  RewriteRule ^tamga/(bc\.[0-9]+)/?$ /yazi.php?doi=$1 [L,QSA,NC]
+  RewriteRule ^10\.00001/(bc\.[0-9]+)/?$ /yazi.php?doi=$1 [L,QSA,NC]
+
+  # ---- Kişi sayfası: /kisi/behic-cetin ----
+  RewriteRule ^kisi/([a-z0-9\-]+)/?$ /kisi.php?k=$1 [L,QSA]
+
+  # ---- Eski adresler kırılmaz ----
+  RewriteRule ^anasayfa\.php$  /            [R=301,L,QSA]
+  RewriteRule ^yazilarim\.php$ /yazilar.php [R=301,L,QSA]
+  RewriteRule ^dergi\.php$     /yazilar.php [R=301,L,QSA]
+  RewriteRule ^basvuru\.html$  /basvuru.php [L,QSA]
+  RewriteRule ^hakem\.html$    /hakem.php   [L,QSA]
+  RewriteRule ^yazar\.html$    /yazar.php   [L,QSA]
+
+  # ---- www yoksa tek adrese toplanır (arama motorları için) ----
+  RewriteCond %{HTTP_HOST} ^www\.kutadgu\.net$ [NC]
+  RewriteRule ^(.*)$ https://kutadgu.net/$1 [R=301,L]
+</IfModule>
+
+# ---- Yükleme boyutu ve çalışma sınırları ----
+<IfModule mod_php.c>
+  php_value upload_max_filesize 24M
+  php_value post_max_size 26M
+  php_value max_execution_time 60
+  php_flag expose_php off
+</IfModule>
+
+# ---- Hata sayfaları ----
+ErrorDocument 403 /hata.php?k=403
+ErrorDocument 404 /hata.php?k=404
+ErrorDocument 500 /hata.php?k=500

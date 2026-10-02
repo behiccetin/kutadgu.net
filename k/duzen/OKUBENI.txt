@@ -1,0 +1,9 @@
+Jodit 4.13.16 - MIT
+Kaynak: https://github.com/xdan/jodit
+Lisans metni: LICENSE-jodit.txt
+
+Bu dosyalar depoya bilerek kondu; bir CDN'den cagrilmaz.
+Sebep: bir dis sunucu kapandiginda ya da izlemeye
+baslandiginda sistemin yazma ekrani calismaz hale gelmemelidir.
+Guncelleme: npm pack jodit@latest, es2021/jodit.min.* dosyalarini kopyala,
+TG_SURUM'u degistir.

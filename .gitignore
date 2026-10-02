@@ -1,0 +1,15 @@
+.venv/
+venv/
+__pycache__/
+*.pyc
+node_modules/
+data/
+*.db
+*.sqlite
+*.sqlite3
+.env
+*.key
+*.pem
+*.log
+*.tmp
+error/

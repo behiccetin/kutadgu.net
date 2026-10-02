@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="tr" data-tema="acik">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Bağlantı yok · Kutadgu</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="/k/tamga.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/k/kutadgu.css">
+<script>(function(){try{var t=localStorage.getItem('kutadgu-tema');
+if(!t)t=(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)?'koyu':'acik';
+document.documentElement.setAttribute('data-tema',t);}catch(e){}})();</script>
+<style>
+/* Kabuğu olmayan tek sayfa: sol sütun, üst çubuk ve altbilgi yoktur,
+   çünkü bağlantı yokken o bağlantıların hepsi ölüdür. Bu yüzden
+   ölçüyü burada sayfa kendisi verir; başka sayfalarda bu yapılmaz. */
+.cd{max-width:52ch;margin-inline:auto;text-align:center}
+.cd svg{margin:0 auto var(--b-5);opacity:.5}
+.cd p{color:var(--metin-2)}
+.cd .satir{justify-content:center;margin-top:var(--b-5)}
+/* Saklanmış sayfalar listesi. Metin sola döner: başlıklar okunacak
+   şeydir, ortalanınca satır başları kayar. */
+.cd-liste{margin-top:var(--b-6);text-align:left;border-top:1px solid var(--cizgi);padding-top:var(--b-5)}
+.cd-liste h2{font-family:var(--ui);font-size:var(--y-1);font-weight:700;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--metin-2);margin:0 0 var(--b-3)}
+.cd-liste ul{list-style:none;margin:0;padding:0;display:grid;gap:var(--b-2)}
+.cd-liste a{display:block;color:var(--metin);font-size:var(--y-3);line-height:var(--sh-orta)}
+.cd-bos{color:var(--metin-2);font-size:var(--y-3)}
+</style>
+</head>
+<body>
+<main>
+<section class="bolum">
+  <div class="kap cd">
+    <svg viewBox="0 0 24 24" width="64" height="64" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
+      <path d="M2 8.8A16 16 0 0 1 22 8.8"/><path d="M5 12.6a11 11 0 0 1 14 0"/>
+      <path d="M8.5 16.3a6 6 0 0 1 7 0"/><circle cx="12" cy="20" r="1"/>
+      <path d="M3 3l18 18" stroke-width="1.5"/>
+    </svg>
+    <h1 id="bas">Şu an bağlantı yok</h1>
+    <p id="ack">Cihazınız çevrimdışı görünüyor. Daha önce açtığınız çalışmalar aşağıda; bağlantı gelince her şey olağan haline döner.</p>
+    <div class="satir">
+      <button class="d d-vurgu" type="button" onclick="location.reload()" id="dgYenile">Yeniden dene</button>
+      <a class="d d-ikinci" href="/" id="dgAna">Ana sayfa</a>
+    </div>
+    <div class="cd-liste">
+      <h2 id="basSaklanan">Çevrimdışı okunabilecek çalışmalar</h2>
+      <ul id="liste"><li class="cd-bos" id="bosMsj">Henüz saklanmış bir sayfa yok.</li></ul>
+    </div>
+  </div>
+</section>
+</main>
+<script>
+(function(){
+  var en = (document.documentElement.lang === 'en') ||
+           (navigator.language && navigator.language.indexOf('tr') !== 0 && navigator.language.indexOf('en') === 0);
+  if (en) {
+    document.documentElement.lang = 'en';
+    document.title = 'No connection · Kutadgu';
+    document.getElementById('bas').textContent = 'There is no connection right now';
+    document.getElementById('ack').textContent = 'Your device appears to be offline. The works you opened earlier are listed below; everything returns to normal once the connection comes back.';
+    document.getElementById('dgYenile').textContent = 'Try again';
+    document.getElementById('dgAna').textContent = 'Home';
+    document.getElementById('basSaklanan').textContent = 'Works available offline';
+    document.getElementById('bosMsj').textContent = 'No page has been stored yet.';
+  }
+  if (!('caches' in window)) return;
+  caches.open('kutadgu-sayfa-v3').then(function(c){
+    c.keys().then(function(k){
+      var ul = document.getElementById('liste');
+      var bulundu = 0;
+      k.forEach(function(istek){
+        var u; try { u = new URL(istek.url); } catch(e){ return; }
+        if (u.pathname.indexOf('/yazi.php') !== 0) return;
+        bulundu++;
+        var li = document.createElement('li');
+        var a = document.createElement('a');
+        a.className = 'kart kart-t';
+        a.href = u.pathname + u.search;
+        a.textContent = decodeURIComponent((u.searchParams.get('y') || '').replace(/-/g,' ')) || a.href;
+        li.appendChild(a); ul.appendChild(li);
+      });
+      if (bulundu) { var b = document.getElementById('bosMsj'); if (b) b.remove(); }
+    });
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="120" viewBox="0 0 360 120">
+  <!-- Ortak zemin deseni.
+       Altı ayrı geleneğin süsleme dilinden birer motif yan yana durur:
+       Türk damgası, sekiz köşeli yıldız, Yunan meandırı, Çin kafesi,
+       Kelt düğümü ve Anadolu kilim üçgeni. Hiçbiri ötekinin önünde
+       değildir; hepsi aynı çizgi kalınlığında, aynı hizada. Desen
+       arka planda çok düşük görünürlükte kullanılır. -->
+  <g fill="none" stroke="#C9A227" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Türk damgası: dallanan ok -->
+    <path d="M30 88V38M30 52 16 40M30 52l14-12M18 74h24"/>
+    <!-- Sekiz köşeli yıldız: iki kare, biri kırk beş derece dönük -->
+    <path d="M82 44h36v36H82z"/>
+    <path d="M100 38l24 24-24 24-24-24z"/>
+    <!-- Yunan meandırı -->
+    <path d="M136 82V50h26v22h-16V60h10"/>
+    <path d="M136 50h26"/>
+    <!-- Çin kafesi -->
+    <path d="M198 44h36v36h-36z"/>
+    <path d="M198 62h36M216 44v36M207 53h18v18h-18z"/>
+    <!-- Kelt düğümü: birbirine geçen üç halka -->
+    <circle cx="280" cy="56" r="12"/>
+    <circle cx="296" cy="56" r="12"/>
+    <circle cx="288" cy="70" r="12"/>
+    <!-- Anadolu kilim üçgeni -->
+    <path d="M330 80l14-26 14 26z"/>
+    <path d="M337 80l7-13 7 13z"/>
+  </g>
+</svg>

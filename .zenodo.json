@@ -1,0 +1,122 @@
+{
+  "_yorum": [
+    "ZENODO ÜSTVERİSİ. GitHub'da bir sürüm (release) yayımlandığında",
+    "Zenodo kaydı bu dosyadan kurar. CITATION.cff ile AYNI kişileri ve",
+    "aynı lisansı taşır; ikisi ayrışırsa hangisinin doğru olduğu",
+    "belirsizleşir, o yüzden biri değişince öteki de değişmeli.",
+    "KURUM DÜZELTMESİ (13 Ağustos 2026): Gökhan Kalağan'ın kurumu",
+    "İzmir Kâtip Çelebi olarak yazılmıştı; doğrusu Balıkesir Üniversitesi.",
+    "Yayımlanmış Zenodo kaydındaki üstveri de düzeltildi: dosyalar kilitlidir,",
+    "üstveri değildir ve yanlış bir kurum, kalıcı bir kayıtta kalmamalıdır.",
+    "",
+    "BEŞ ORCID DE YAZILI. Sonuncusu 13 Ağustos 2026'da eklendi.",
+    "Sağlama haneleri denetlendi ve tuttu; bu biçim geçerliliğidir, sahiplik",
+    "değildir. Sahiplik kişinin panelden kendi ORCID hesabıyla bağlanmasıyla",
+    "kanıtlanır.",
+    "",
+    "BAŞ YAPIMCI İKİ YERDE BİRDEN YAZILIDIR ve bu bilerek yapıldı.",
+    "Zenodo'nun 'creators' listesinde rol alanı YOKTUR; orada yalnızca",
+    "sıra vardır ve sıra bir gelenektir, makinenin okuduğu bir bilgi",
+    "değildir. Bir atıf üreticisi listeyi alfabetik sıralarsa 'ilk yazar'",
+    "bilgisi sessizce kaybolur. Bu yüzden Behiç Çetin hem creators'ın",
+    "başında durur (insanın okuduğu yer) hem contributors'ta ProjectLeader",
+    "olarak yazılıdır (makinenin okuduğu yer). DataCite şeması aynı kişinin",
+    "iki listede birden bulunmasına izin verir; ikisi çelişmez, biri",
+    "ötekini açıkça söyler.",
+    "",
+    "ÖTEKİ DÖRT KİŞİ contributors'a EKLENMEDİ. Onlar zaten creators'ta;",
+    "aynı kişiyi 'ProjectMember' diye ikinci kez yazmak hiçbir bilgi",
+    "eklemez, yalnızca kaydı kalabalıklaştırır. Kimin ne yaptığı 'notes'",
+    "alanında cümleyle yazılıdır ve orada okunur.",
+    "",
+    "SÜRÜM 1.0.0 yazıldı ama TARİH YAZILMADI. Yayım günü, yatırmanın",
+    "yapıldığı gündür ve o gün henüz gelmedi; bugünün tarihini şimdiden",
+    "yazmak, olmamış bir olayı kayda geçirmektir. Zenodo tarihi kendisi",
+    "koyar.",
+    "",
+    "",
+    "DİL ALANI TEK DEĞER ALIR (eski Zenodo şeması) ve 'tur' yazılıdır.",
+    "Oysa arayüz sekiz dilde çalışır. Sekizini birden yazmak DOĞRU OLMAZDI:",
+    "yalnızca Türkçe ve İngilizce insan gözünden geçti; öteki altısı makine",
+    "çevirisidir, her sayfada öyle etiketlenir ve canonical/hreflang",
+    "kümesinin dışında tutulur. Sitenin kendi üstlenmediği bir iddiayı",
+    "kalıcı bir DOI kaydına yazmak, sistemin karşı olduğu şeydir. Zenodo",
+    "arayüzündeki kayda Türkçe VE İngilizce birlikte yazıldı (yeni şema iki",
+    "dili birden taşır); açıklama da iki dilde durur.",
+    "YATIRMA GERİ ALINAMAZ. Zenodo DOI'si kalıcıdır; yayımlanan bir",
+    "kayıt silinmez. Bu yüzden yatırma, adı geçen beş kişiden birinin",
+    "kendi eliyle onaylamasıyla yapılmalıdır."
+  ],
+  "upload_type": "software",
+  "version": "1.0.0",
+  "title": "Kutadgu · Açık Erişimli Akademik Yayın Sistemi (Open Access Academic Publishing System)",
+  "description": "<p><strong>Kutadgu</strong>, hakem raporlarının adıyla yayımlandığı, hiçbir aşamasında ücret alınmayan ve bütün arşivi tek dosyada indirilebilen açık erişimli bir akademik yayın sistemidir.</p><p>Yazardan işlem ücreti, okurdan abonelik alınmaz; sistemde reklam bulunmaz. Ücret yasağı sistemin birinci değişmez ilkesidir. Her çalışma kalıcı ve devredilemez bir kimlik (<em>Tamga</em>) alır. Hakemlik açıktır: raporlar hakemin adıyla, kararlar gerekçesiyle, bekleme süreleri ölçülmüş hâliyle yayımlanır. Anlaşmazlıklar kurul oyuyla çözülür ve oylar gerekçeleriyle görünür.</p><p>Arşivin tamamı parmak iziyle birlikte tek dosyada indirilebilir; üstveri OAI-PMH 2.0 ile toplanabilir. Arayüz sekiz dilde çalışır ve makine çevirisi bir yayın değil bir okuma yardımı olarak, kaynağı yazılarak sunulur.</p><p>Yazılım AGPL-3.0 ile, yayımlanan çalışmalar CC BY 4.0 ile açıktır. Metinler makineyle okunabilir ve eğitimde kullanılabilir; karşılığında ücret istenmez, yalnızca künyenin ve kalıcı kimliğin anılması beklenir.</p><p>Adres: <a href=\"https://kutadgu.net\">kutadgu.net</a></p><hr><p><strong>Kutadgu</strong> is an open access academic publishing system in which reviewer reports are published under the reviewer's own name, no fee is charged at any stage, and the entire archive can be downloaded as a single file.</p><p>No processing fee is taken from authors, no subscription from readers, and the system carries no advertising. The prohibition on fees is the system's first unalterable principle. Every work receives a permanent, non transferable identifier (<em>Tamga</em>). Review is open: reports appear under the reviewer's name, decisions with their reasoning, and waiting times as measured.</p><p>The whole archive can be downloaded as one file together with its fingerprint; metadata can be harvested over OAI-PMH 2.0. The interface runs in eight languages, of which Turkish and English are human reviewed; the remaining six are machine translations, are labelled as such on every page and are deliberately excluded from the canonical and hreflang set. Machine translation is offered as a reading aid, not as a publication, and its source is always stated.</p><p>The software is open under AGPL-3.0 and the published works under CC BY 4.0. The texts are machine readable and may be used in education; nothing is charged in return, only the citation and the permanent identifier are expected to be named.</p>",
+  "notes": "KATKI BEYANI · CONTRIBUTION STATEMENT\n\nBehiç Çetin sistemin baş yapımcısıdır (project leader): tasarımı, yazılımın tamamını, veri modelini, çok dilli arayüzü, açık hakemlik akışını, arşiv dökümünü ve OAI-PMH üstveri katmanını geliştirmiş; altyapıyı kurmuş ve işletmektedir.\n\nMurat Kayalar, Gökhan Kalağan, Mustafa Zihni Tunca ve İbrahim Atilla Acar kurucu kuruldur: yayın ilkelerini, ücret yasağını, hakemlik ölçütlerini ve içerik kurallarını belirlemiş, kurul kararlarıyla sistemin işleyişini yönlendirmişlerdir.\n\nBeş kişinin tamamı bu çalışmanın ortak üreticisidir; yukarıdaki ayrım bir hiyerarşi değil, bir iş bölümü beyanıdır.\n\n---\n\nBehiç Çetin is the project leader: he designed the system and wrote all of its software, including the data model, the multilingual interface, the open peer review workflow, the archive dump and the OAI-PMH metadata layer, and he built and operates the infrastructure.\n\nMurat Kayalar, Gökhan Kalağan, Mustafa Zihni Tunca and İbrahim Atilla Acar form the founding board: they established the publishing principles, the prohibition on fees, the review criteria and the content rules, and they direct the system through board decisions.\n\nAll five are joint creators of this work; the distinction above states a division of labour, not a hierarchy.",
+  "language": "tur",
+  "license": "AGPL-3.0-only",
+  "access_right": "open",
+  "creators": [
+    {
+      "name": "Çetin, Behiç",
+      "affiliation": "Burdur Mehmet Akif Ersoy Üniversitesi",
+      "orcid": "0000-0002-8926-2394"
+    },
+    {
+      "name": "Kayalar, Murat",
+      "affiliation": "Burdur Mehmet Akif Ersoy Üniversitesi",
+      "orcid": "0000-0001-8824-5608"
+    },
+    {
+      "name": "Kalağan, Gökhan",
+      "affiliation": "Balıkesir Üniversitesi",
+      "orcid": "0000-0001-8296-6316"
+    },
+    {
+      "name": "Tunca, Mustafa Zihni",
+      "affiliation": "Süleyman Demirel Üniversitesi",
+      "orcid": "0000-0003-2315-905X"
+    },
+    {
+      "name": "Acar, İbrahim Atilla",
+      "affiliation": "İzmir Kâtip Çelebi Üniversitesi",
+      "orcid": "0000-0002-9354-6971"
+    }
+  ],
+  "contributors": [
+    {
+      "name": "Çetin, Behiç",
+      "affiliation": "Burdur Mehmet Akif Ersoy Üniversitesi",
+      "orcid": "0000-0002-8926-2394",
+      "type": "ProjectLeader"
+    },
+    {
+      "name": "Çetin, Behiç",
+      "affiliation": "Burdur Mehmet Akif Ersoy Üniversitesi",
+      "orcid": "0000-0002-8926-2394",
+      "type": "ContactPerson"
+    }
+  ],
+  "keywords": [
+    "open access",
+    "scholarly publishing",
+    "open peer review",
+    "academic journal software",
+    "research infrastructure",
+    "OAI-PMH",
+    "açık erişim",
+    "açık hakemlik",
+    "akademik yayıncılık"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://kutadgu.net",
+      "relation": "isDescribedBy",
+      "scheme": "url"
+    },
+    {
+      "identifier": "https://kutadgu.net/oai?verb=Identify",
+      "relation": "isCompiledBy",
+      "scheme": "url"
+    }
+  ]
+}
