@@ -36,6 +36,7 @@ $en       = k_en();
 $doktora  = tg_yazarlik_doktora_sarti();
 $benz     = tg_benzerlik_sarti();
 $yol      = tg_kabul_yolu();
+$metinAz  = (int)tg_ayar('metin_en_az_kelime', 800);   /* basvuru.php ile aynı kaynak */
 $kabulSay = (int)tg_ayar('kabul_gecerli', 2);
 $SABLON   = '/dosya/Kutadgu-calisma-sablonu.docx';
 
@@ -123,7 +124,9 @@ k_bas([
              okunduğu için kendiliğinden değişir. */ ?>
     <p class="metin-sonuk"><?= k_esc(tg_yazarlik_kosulu_kisa($en)) ?></p>
     <ul class="ok-liste">
-      <li><?= k_c('<b>Metniniz.</b> Word belgesi olarak ya da yapıştırılabilir bir metin olarak. Tam metin başvuru anında istenmez; kabul edildikten sonra yazma ekranında girilir.', '<b>Your text.</b> As a Word document or as text you can paste. The full text is not asked for at application time; it is entered on the writing screen after acceptance.') ?></li>
+      <li><?= k_c('<b>Tam metniniz.</b> Tam metin başvuru anında istenir: en az ' . $metinAz . ' kelime. Word belgenizi açıp tamamını kopyalar ve forma yapıştırırsınız; dosya yüklenmez.', '<b>Your full text.</b> The full text is asked for at application time: at least ' . $metinAz . ' words. You open your Word document, copy all of it and paste it into the form; no file is uploaded.') ?></li>
+      <li><?= k_c('<b>Kaynakçanız.</b> Metinden ayrı bir kutuya yapıştırılır ve boş bırakılamaz. Kaynakçası olmayan bir çalışma yayımlanmaz.', '<b>Your reference list.</b> It is pasted into a box of its own and cannot be left empty. A work without sources is not published.') ?></li>
+      <li><?= k_c('<b>Künye dilinde başlık ve öz.</b> Çalışmanız künye dilinden başka bir dildeyse (örneğin Türkçeyse) künye dilinde başlık, kısa öz ve ayrıca genişletilmiş bir öz de gerekir. Ayrıntısı aşağıdaki sorular arasındadır.', '<b>A title and abstract in the metadata language.</b> If your work is in a language other than the metadata language (Turkish, for example), a title, a short abstract and also an extended abstract in the metadata language are needed. The details are in the questions below.') ?></li>
       <li><?= k_c('<b>Her yazar için ORCID.</b> Bu sistemde bir adın kime ait olduğunu belirleyen tek numara odur. Yoksa <a href="https://orcid.org/register" target="_blank" rel="noopener">orcid.org</a> üzerinden dakikalar içinde ücretsiz alınır.', '<b>An ORCID for every author.</b> It is the only number that ties a name to a person in this system. If you have none, one is free and takes minutes at <a href="https://orcid.org/register" target="_blank" rel="noopener">orcid.org</a>.') ?></li>
       <li><?= k_c('<b>Ortak yazarların e-posta adresleri.</b> Eklediğiniz her yazara, bu çalışmada yazar olarak gösterildiğini söyleyen bir bildirim gider. Adının kullanıldığını bilmeyen bir yazarlık, yazarlık değildir.', '<b>The e mail addresses of your co authors.</b> Every author you add receives a notice saying they have been listed as an author of this work. An authorship the person does not know about is not an authorship.') ?></li>
       <li><?= k_c('<b>Etik kurul kararınız</b> (gerekiyorsa): kurulun tam adı, karar tarihi ve karar numarası. Belge yüklenmez; bu üç bilgi yayımlanır.', '<b>Your ethics committee decision</b> (if one is required): the full name of the committee, the date and the number. The document is not uploaded; those three details are published.') ?></li>
@@ -132,8 +135,8 @@ k_bas([
       <?php endif; ?>
     </ul>
     <p class="kutu kutu-kut"><?= k_c(
-      '<b>Hesabınız olmak zorunda değil.</b> Formu doldurup gönderebilirsiniz; çalışmanız alındığında adınıza bir hesap açılır ve erişim bağlantısı e-postanıza gider. Ayrıca bir kayıt adımı yoktur. Hesabınız varsa giriş yapın: unvan, ad, kurum ve ORCID alanları kendiliğinden dolar.',
-      '<b>You do not need an account.</b> Fill in the form and send it; an account is opened in your name when the work arrives, and the access link goes to your e mail. There is no separate registration step. If you do have an account, sign in: the title, name, institution and ORCID fields fill themselves.'
+      '<b>Önce giriş yapın.</b> Çalışma göndermek için hesabınızla giriş yapmış olmanız gerekir. Hesabınız yoksa <a href="/panel.php">panel sayfasından</a> e-posta adresiniz ve en az 10 karakterli bir parolayla açarsınız. Giriş yapınca unvan, ad, kurum ve ORCID alanları kendiliğinden dolar. Formda yazdıklarınız tarayıcınızda taslak olarak saklanır; hesabınızı açıp döndüğünüzde olduğu gibi geri gelir.',
+      '<b>Sign in first.</b> To send a work you must be signed in to your account. If you have none, you open one on <a href="/panel.php">the panel page</a> with your e mail address and a password of at least 10 characters. Once signed in, the title, name, institution and ORCID fields fill themselves. What you write in the form is kept as a draft in your browser; it comes back unchanged when you return with your account.'
     ) ?></p>
   </div>
 </section>
@@ -195,10 +198,10 @@ k_bas([
       </article>
 
       <article>
-        <h3><?= k_c('Tam metni yazma ekranında girin', 'Enter the full text on the writing screen') ?></h3>
+        <h3><?= k_c('Tam metni forma yapıştırın', 'Paste the full text into the form') ?></h3>
         <p><?= k_c(
-          'Kabulden sonra panelinizde bir yazma ekranı açılır. Word\'deki gibi bir araç çubuğu vardır: tablo ekleme, görsel ekleme, başlık, madde, üst ve alt simge, formül işaretleri, geri alma.',
-          'After acceptance a writing screen opens in your panel. It has a toolbar like the one in Word: insert table, insert image, headings, lists, superscript and subscript, symbols, undo.'
+          'Başvuru formu tam metni bir yazma kutusunda ister (en az ' . $metinAz . ' kelime); kabulden sonra aynı metni panelinizdeki yazma ekranında düzeltebilirsiniz. İkisinde de Word\'deki gibi bir araç çubuğu vardır: tablo ekleme, görsel ekleme, başlık, madde, üst ve alt simge, formül işaretleri, geri alma.',
+          'The application form asks for the full text in a writing box (at least ' . $metinAz . ' words); after acceptance you can correct the same text on the writing screen in your panel. Both have a toolbar like the one in Word: insert table, insert image, headings, lists, superscript and subscript, symbols, undo.'
         ) ?></p>
         <p><?= k_c(
           '<b>Word belgenizi olduğu gibi yapıştırabilirsiniz.</b> Yapıştırdığınız anda Word\'ün biçim çöpü atılır, YAPI kalır: başlık düzeyleri, listeler, tablolar, dipnotlar, kalın ve eğik. İçindekiler yapıştırdığınız anda kendiliğinden oluşur ve ekranın yanında görünür; oluşmadıysa başlıklarınız biçemle değil elle büyütülmüş demektir ve ekran bunu size söyler.',
@@ -296,6 +299,27 @@ k_bas([
         <div><p><?= k_c(
           'Sorun değil. Bilgilerini elle yazın ve e-posta adresini girin; gönderim bittiğinde o kişiye, bu çalışmada yazar olarak gösterildiğini söyleyen bir bildirim ve otuz gün geçerli bir hesap kurma daveti gider. Hesabı ORCID\'iyle ya da e-postasıyla kurabilir; kurmasa da yazarlığı durur.',
           'That is fine. Enter the details by hand along with an e mail address; when the submission is complete that person receives a notice saying they have been listed as an author, together with an invitation to open an account, valid for thirty days. They can open it with their ORCID or with their e mail; the authorship stands even if they do not.'
+        ) ?></p></div>
+      </details>
+      <details>
+        <summary><?= k_c('Form ORCID numaramı geçersiz sayıyor.', 'The form says my ORCID is invalid.') ?></summary>
+        <div><p><?= k_c(
+          'ORCID numarasının son hanesi bir sağlama basamağıdır; tek bir rakam yanlışsa numara kabul edilmez. Numarayı elle yazmak yerine orcid.org profilinizden kopyalayıp yapıştırın. 16 haneli numara ya da orcid.org bağlantısı kabul edilir.',
+          'The last digit of an ORCID is a check digit; a single wrong digit and the number is refused. Instead of typing it, copy it from your orcid.org profile and paste it. Either the 16 digit number or the orcid.org link is accepted.'
+        ) ?></p></div>
+      </details>
+      <details>
+        <summary><?= k_c('Gönderirken "çok fazla başvuru denemesi" uyarısı çıktı.', 'I got a "too many application attempts" message.') ?></summary>
+        <div><p><?= k_c(
+          'Aynı hesaptan kısa sürede 30\'dan fazla gönderme denemesi yapıldığında sistem iki saat bekletir; hatalı denemeler de sayılır. Aynı kurumdaki başka hesaplar bundan etkilenmez. İki saat sonra yazdıklarınız tarayıcınızda duruyorsa kaldığınız yerden devam edersiniz.',
+          'After more than 30 attempts to send from one account in a short time the system makes you wait two hours; failed attempts count too. Other accounts at the same institution are not affected. After two hours, if what you wrote is still in your browser, you carry on where you left off.'
+        ) ?></p></div>
+      </details>
+      <details>
+        <summary><?= k_c('Tam metin yeterli sayılmıyor.', 'The full text is not counted as enough.') ?></summary>
+        <div><p><?= k_c(
+          'Form tam metinde en az ' . $metinAz . ' kelime arar ve kutunun altında kelime sayınızı gösterir. Yalnızca özet ya da yarım bir metin yapıştırdıysanız sayı yetmez. Word belgesinde Ctrl+A ile tümünü seçip kopyalayın ve kutuya yapıştırın.',
+          'The form looks for at least ' . $metinAz . ' words in the full text and shows your word count under the box. If you pasted only the abstract or half a text, the count falls short. In your Word document select everything with Ctrl+A, copy it and paste it into the box.'
         ) ?></p></div>
       </details>
       <details>
