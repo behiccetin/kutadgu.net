@@ -5,6 +5,7 @@ All notable changes to Kutadgu are recorded here. Versions follow [Semantic Vers
 ## [Unreleased]
 
 ### Added
+- The test scripts (`sinama/`, 82 scripts) are now in the repository; the founders' e-mail addresses are read from a local file, never stored in the repository; the folder is closed to the web.
 - Public source repository at https://github.com/behiccetin/kutadgu.net, published as a history-free snapshot; `GONDER.bat` updates it before deploying, and stops if it cannot.
 - Optional per-work DOI through Zenodo: drafts are prepared automatically, publishing is always a manual action by a named person; sandbox mode for testing.
 - `README.md`, `GOVERNANCE.md`, `ROADMAP.md` and this changelog.

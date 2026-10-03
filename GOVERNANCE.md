@@ -51,7 +51,7 @@ The declaration and the draft statute fix a set of principles that no vote and n
 | Infrastructure (reference instance) | Behiç Çetin, on a volunteer basis |
 | Editorial process | Chief editors in office |
 
-Today one person maintains the software. That is the main continuity risk of the project and we say so plainly. The steps under way to reduce it are on the [roadmap](ROADMAP.md): an automated test suite in the repository, an English developer guide and glossary for the Turkish identifiers, reproducible packaging, a second instance run by a different organisation, and a second maintainer with commit rights.
+Today one person maintains the software. That is the main continuity risk of the project and we say so plainly. The steps under way to reduce it are on the [roadmap](ROADMAP.md): the test suite (now in the repository) running automatically on every change, an English developer guide and glossary for the Turkish identifiers, reproducible packaging, a second instance run by a different organisation, and a second maintainer with commit rights.
 
 ## Continuity and handover
 

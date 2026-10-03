@@ -13,7 +13,7 @@ Each milestone ends in something that can be checked from outside: a tagged rele
 
 ## M2. Test suite and maintainability
 
-- Move the existing test scripts into the repository and run them in continuous integration on every change
+- Run the test scripts in `sinama/` (82 scripts, in the repository since October 2026) in continuous integration on every change, with portable paths
 - English developer guide and glossary for the Turkish identifiers (`yazi`, `hakem`, `kurul`, `tamga` and so on), so that contributors who do not read Turkish can work on the code
 - Refactor the largest files (`api/index.php`, `panel.php`, `ortak.php`) into modules along the lines the tests draw
 

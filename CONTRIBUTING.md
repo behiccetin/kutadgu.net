@@ -154,10 +154,13 @@ olan hatalardandır, çünkü sizin tarayıcınızda sorun görünmez.
 5. **Veri dizinine bakın.** Yazma yoluna dokunduysanız üretilen JSON
    dosyalarının bozulmadığını görün.
 
-Sınamalar depo dışında ayrı bir klasörde tutulur ve **depoya girmez**.
+Sınamalar `sinama/` klasöründedir (82 betik); nasıl çalıştırılacakları
+`sinama/OKUBENI.md` içinde yazılıdır. Klasör sunucuda dışarıya kapalıdır.
 Düzeni şudur: her iş için bir betik, sonunda sayı raporlanır
 (`GECTI: n KALDI: m`). Kendi sınamanızı yazarsanız aynı düzeni izleyin
-ve dosyayı bu depoya eklemeyin.
+ve `sinama/` altına ekleyin. Kurucuların gerçek e-posta adresleri
+depoya girmez; gereken betikler onları `KUTADGU_KURUL_EPOSTA` ortam
+değişkeninin gösterdiği dosyadan okur.
 
 ## Katkı nasıl gelir
 
@@ -185,7 +188,7 @@ ve dosyayı bu depoya eklemeyin.
   otomatik birleştirme yok. Aceleye getirilmiş bir katkı doğrudan
   okuyucuya gider.
 - **Depoya girmeyecek şeyler:** veri dosyaları, kütükler, anahtarlar,
-  `.env`, üretilen dökümler, sınama dosyaları. `.gitignore` bunların
+  `.env`, üretilen dökümler, sınama verisi. `.gitignore` bunların
   çoğunu zaten kapatıyor; `ruh-ayar.json` hiçbir koşulda girmez.
 
 ## Nelere dokunulmaz
@@ -401,10 +404,13 @@ looks wrong in your own browser.
 5. **Look at the data directory.** If you touched a write path, check
    that the JSON files produced are not corrupted.
 
-Tests are kept in a separate folder outside the repository and **do not
-enter it**. The arrangement is: one script per job, reporting counts at
-the end (`GECTI: n KALDI: m`). If you write your own test, follow the
-same arrangement and do not add the file to this repository.
+Tests live in `sinama/` (82 scripts); how to run them is described in
+`sinama/OKUBENI.md`. The folder is closed to the web on the server. The
+arrangement is: one script per job, reporting counts at the end
+(`GECTI: n KALDI: m`). If you write your own test, follow the same
+arrangement and add it under `sinama/`. The founders' real e-mail
+addresses never enter the repository; scripts that need them read them
+from the file named by the `KUTADGU_KURUL_EPOSTA` environment variable.
 
 ## How contributions arrive
 
@@ -432,7 +438,7 @@ same arrangement and do not add the file to this repository.
   therefore read and merged by hand; nothing is merged automatically. A
   contribution rushed through goes straight to readers.
 - **What must not enter the repository:** data files, logs, keys,
-  `.env`, generated dumps, test files. `.gitignore` already closes off
+  `.env`, generated dumps, test data. `.gitignore` already closes off
   most of these; `ruh-ayar.json` never enters under any circumstances.
 
 ## What is not open to change
