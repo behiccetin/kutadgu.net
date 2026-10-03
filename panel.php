@@ -326,6 +326,10 @@ button.pn-duzenle:disabled{opacity:.55;cursor:default}
   100%{box-shadow:0 0 0 0 rgba(191,149,63,0)}
 }
 @media (prefers-reduced-motion:reduce){ .pn-vurgu-ac{animation:none} }
+.pn-bek-kutu{margin:0 0 var(--b-4);padding:var(--b-3) var(--b-4);border:1px solid var(--cizgi);
+  border-inline-start:4px solid var(--kut);border-radius:var(--r-3);background:var(--yuzey-2)}
+.pn-bek-kutu.gizli{display:none}
+.pn-bek-kutu h3{margin:0 0 var(--b-2)}
 .pn-alt-blok{margin-top:var(--b-4);padding-top:var(--b-3);border-top:1px solid var(--cizgi)}
 .pn-alt-blok h3{margin:0 0 var(--b-2)}
 .pn-is-sat{border:1px solid var(--cizgi);border-radius:var(--r-2);padding:var(--b-2);margin-top:var(--b-2)}
@@ -1505,6 +1509,15 @@ k_bas([
         <h2><?= k_c('Editör', 'Editor') ?></h2>
         <p><?= k_c('Çalışmalar ve insanlar üzerine verilen kararlar.', 'The decisions taken about works and about people.') ?></p>
       </header>
+
+      <?php /* BEKLEYEN İŞLER. Sekme rozeti yalnızca bir sayı söylüyordu ve
+               neyin beklediği hiçbir yerde yazmıyordu; baş editör "1"i
+               görüp aradığı işi bulamadı. Bu kutu rozetin saydığı her şeyi
+               adıyla yazar ve tek tıkla ilgili karta götürür. */ ?>
+      <div class="pn-bek-kutu gizli" id="edBekKutu" role="status">
+        <h3><?= k_c('Bekleyen işler', 'Waiting for you') ?></h3>
+        <div class="pn-liste" id="edBekListe"></div>
+      </div>
 
       <?php /* Yeni başvurular: kabul kararı baş editörlerindir, ama
                kararın verildiği yer editörlük sekmesidir. */ ?>
@@ -2827,8 +2840,34 @@ $betik = <<<JS
 
   /* Editör sekmesindeki rozet iki işi birden sayar: belge bekleyenler
      ve karara bağlanmamış alan önerileri. */
-  var edBekleyen=0, alBekleyen=0;
+  var edBekleyen=0, alBekleyen=0, edKalemler=[], alKalemler=[];
+  function edKartaGit(o){
+    /* Bilinen kimlikli kart doğrudan açılır; öteki, çip şeridindeki
+       adıyla bulunur (çipin sonuna sayı eklenmiş olabilir). */
+    if(o.id && typeof kartaGit === 'function'){ kartaGit('editor', o.id); return; }
+    var dg = Array.prototype.slice.call(document.querySelectorAll('[data-pnl="editor"] .pn-yol button'))
+      .filter(function(b){ return (b.textContent||'').trim().indexOf(o.kart) === 0; })[0];
+    if(dg){ dg.click(); }
+  }
+  function edBekCiz(){
+    var kutu = \$('edBekKutu'), liste = \$('edBekListe'); if(!kutu || !liste) return;
+    var oge = edKalemler.concat(alKalemler);
+    if(!oge.length){ kutu.classList.add('gizli'); liste.innerHTML=''; return; }
+    kutu.classList.remove('gizli'); liste.innerHTML='';
+    oge.forEach(function(o){
+      var s = document.createElement('div'); s.className = 'pn-sat';
+      var t = document.createElement('span');
+      t.innerHTML = '<b></b><br><small></small>';
+      t.querySelector('b').textContent = o.ad;
+      t.querySelector('small').textContent = o.alt;
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'd d-ikinci d-kucuk';
+      b.textContent = EN ? 'Open' : 'Aç';
+      b.addEventListener('click', function(){ edKartaGit(o); });
+      s.appendChild(t); s.appendChild(b); liste.appendChild(s);
+    });
+  }
   function rozEditorCiz(){
+    edBekCiz();
     var n = edBekleyen + alBekleyen;
     roz('rozEditor', n,
         EN?(n===1?'editorial task is waiting':'editorial tasks are waiting'):'editörlük işi bekliyor', 'editor');
@@ -2882,7 +2921,13 @@ $betik = <<<JS
           s.appendChild(t); kutu.appendChild(s);
         });
       }
-      alBekleyen=bekleyen.length; rozEditorCiz();
+      alBekleyen=bekleyen.length;
+      alKalemler=bekleyen.map(function(x){
+        return {ad:(x.kod||'')+'  '+(x.tr||''),
+                alt:EN?'Proposed field awaits a decision':'Önerilen bilim dalı karar bekliyor',
+                kart:EN?'Proposed fields':'Önerilen bilim dalları', id:'kartAlan'};
+      });
+      rozEditorCiz();
     }).catch(function(){});
   }
 
@@ -3929,7 +3974,19 @@ $betik = <<<JS
       roz('rozHesap', (d.dogrulama && d.dogrulama.durum!=='onayli') ? 1 : 0,
           EN?'step of your account is unfinished':'hesap adımınız tamamlanmadı', 'hesap');
       if(d.editor){
-        edBekleyen=d.bekleyen.filter(function(x){ return x.tur==='belge'||x.tur==='gonullu'||x.tur==='atama'; }).length;
+        var edOge=d.bekleyen.filter(function(x){ return x.tur==='belge'||x.tur==='gonullu'||x.tur==='atama'; });
+        edBekleyen=edOge.length;
+        edKalemler=edOge.map(function(x){
+          var belge = x.tur==='belge';
+          var ad = String(x.ad||x.baslik||x.ozet||x.kisi||'').slice(0,120);
+          return {ad: ad || (belge ? (EN?'Credential':'Doktora belgesi') : (EN?'Work':'Çalışma')),
+                  alt: belge ? (EN?'Doctoral credential awaits verification':'Doktora belgesi onay bekliyor')
+                             : (x.tur==='gonullu' ? (EN?'A volunteer reviewer awaits a decision':'Gönüllü hakem karar bekliyor')
+                                                  : (EN?'A reviewer assignment awaits action':'Hakem ataması bekliyor')),
+                  kart: belge ? (EN?'Awaiting credential verification':'Doktora belgesi bekleyenler')
+                              : (EN?'Works and reviewer assignment':'Çalışmalar ve hakem atama'),
+                  id: belge ? 'kartEditor' : ''};
+        });
         rozEditorCiz();
       }
 
