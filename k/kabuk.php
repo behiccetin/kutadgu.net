@@ -36,8 +36,12 @@ if (!function_exists('k_dil')) {
        3. Ülke                        (Türkiye'den Türkçe, dışından İngilizce)
        4. Tarayıcı dili               (ülke bilinmiyorsa)
        5. Varsayılan                  (ayar.php)                              */
+    /* Bir sayfa dili kendisi belirlediyse (örn. tamga adresi çalışmanın
+       yazıldığı dili açar) kabuk de aynı dili kullanmalıdır. */
+    function k_dil_zorla(string $dil): void { $GLOBALS['__k_dil_zorla'] = $dil; }
     function k_dil(): string {
         static $d = null;
+        if (!empty($GLOBALS['__k_dil_zorla']) && isset(k_diller()[$GLOBALS['__k_dil_zorla']])) return (string)$GLOBALS['__k_dil_zorla'];
         if ($d !== null) return $d;
         $diller = k_diller();
 

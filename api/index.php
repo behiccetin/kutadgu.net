@@ -5423,6 +5423,8 @@ if ($yol === '/yazar-basvuru' && $metod === 'POST') {
        durdurmaktır, yazarı kısaltmak değil. */
     $mMetin    = guvenli_html(mb_substr((string)($g['makale_metin'] ?? ''), 0, 900000));
     $mKaynakca = guvenli_html(mb_substr((string)($g['makale_kaynakca'] ?? ''), 0, 120000));
+    /* Gövdeye yapıştırılan özet ve kaynakça, ayrı kutularla aynıysa bir kez saklanır. */
+    $mMetin = tg_metin_tekrar_ayikla($mMetin, [(string)($g['makale_ozet'] ?? ''), (string)($g['makale_ozet_en'] ?? '')], $mKaynakca);
     /* Bilim alanı: hakemin göreceği dizin listesi buna göre süzülür */
     $mAlan = preg_replace('/[^a-z]/', '', strtolower((string)($g['alan'] ?? '')));
     if (!in_array($mAlan, ['sag','fen','sos','ikt','egt','hkk','san'], true)) $mAlan = '';

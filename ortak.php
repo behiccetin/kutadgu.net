@@ -1085,6 +1085,58 @@ function guvenli_html(string $h): string {
     }
 
     /* Sayfada basılacak güvenli gösterim */
+    /* AYNI METİN İKİ KEZ BASILMASIN. Yazar tam metni Word'den yapıştırırken
+       çoğu zaman metnin içindeki "Abstract/Özet" ve "References/Kaynakça"
+       bölümlerini de getirir; oysa özet ve kaynakça ayrı kutulardan da
+       alınır ve sayfa onları kendisi basar. Sonuç: özet iki, kaynakça iki
+       kez görünüyor, içindekilerde "References" iki satır oluyor.
+
+       Yalnızca gövdedeki bölüm ayrı alanla AYNI İÇERİĞİ taşıyorsa atılır:
+       başlığı özet/kaynakça adlarından biri olmalı ve ilk otuz sözcüğü ile
+       uzunluğu alanla örtüşmeli. Yazarın farklı bir "Özet" bölümü yazdığı
+       bir metne dokunulmaz. $ozetler dizi alır: özet bir dilde, çevirisi
+       öbüründe durabilir. */
+    function tg_metin_tekrar_ayikla(string $metin, $ozetler, string $kaynakca): string {
+        if ($metin === '') return $metin;
+        $sozcuk = function (string $h): array {
+            $t = mb_strtolower(html_entity_decode(strip_tags($h), ENT_QUOTES, 'UTF-8'), 'UTF-8');
+            preg_match_all('/[\p{L}\p{N}]+/u', $t, $m);
+            return $m[0];
+        };
+        $ayni = function (array $a, array $b): bool {
+            $na = count($a); $nb = count($b);
+            if ($na < 8 || $nb < 8) return false;
+            $r = $na / $nb;
+            if ($r < 0.8 || $r > 1.25) return false;
+            $k = min(30, $na, $nb);
+            return array_slice($a, 0, $k) === array_slice($b, 0, $k);
+        };
+        $ozetS = [];
+        foreach ((array)$ozetler as $o) { $w = $sozcuk((string)$o); if ($w) $ozetS[] = $w; }
+        $kaynS = $sozcuk($kaynakca);
+        if (!$ozetS && !$kaynS) return $metin;
+        if (!preg_match_all('#<h([1-3])\b[^>]*>(.*?)</h\1>#isu', $metin, $m, PREG_OFFSET_CAPTURE)) return $metin;
+        $n = count($m[0]);
+        $ozetAd = ['abstract', 'özet', 'öz', 'summary', 'özet abstract', 'abstract özet'];
+        $kaynAd = ['references', 'reference list', 'kaynakça', 'kaynaklar', 'bibliography'];
+        $sil = [];
+        for ($i = 0; $i < $n; $i++) {
+            $bas  = $m[0][$i][1];
+            $govS = $bas + strlen($m[0][$i][0]);
+            $son  = ($i + 1 < $n) ? $m[0][$i + 1][1] : strlen($metin);
+            $ad   = trim(preg_replace('/^[\d.\s]+/u', '', implode(' ', $sozcuk($m[2][$i][0]))));
+            $govde = $sozcuk(substr($metin, $govS, $son - $govS));
+            $at = false;
+            if (in_array($ad, $ozetAd, true)) { foreach ($ozetS as $ow) { if ($ayni($govde, $ow)) { $at = true; break; } } }
+            elseif (in_array($ad, $kaynAd, true) && $kaynS && $ayni($govde, $kaynS)) { $at = true; }
+            if ($at) $sil[] = [$bas, $son];
+        }
+        for ($j = count($sil) - 1; $j >= 0; $j--) {
+            $metin = substr($metin, 0, $sil[$j][0]) . substr($metin, $sil[$j][1]);
+        }
+        return $metin;
+    }
+
     function tg_zengin(string $s): string {
         $s = trim($s);
         if ($s === '') return '';

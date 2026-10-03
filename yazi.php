@@ -112,6 +112,10 @@ foreach ($yazilar as $yy) {
 if ($yazi && $doiAra !== '' && !isset($_GET['lang'])) {
     $ozgunKod = tg_yazi_dili($yazi);
     if ($ozgunKod !== '') $lang = ($ozgunKod === 'en') ? 'en' : 'tr';
+    /* Sayfanın dili değiştiyse KABUK da onunla gider: yan menü, üst çubuk
+       ve k_c() sayfanın geri kalanıyla aynı dili konuşmalıdır. Aksi hâlde
+       gövde İngilizce, menü Türkçe kalıyordu. */
+    if (function_exists('k_dil_zorla')) k_dil_zorla($lang);
 }
 
 /* Kalıcı adrese topla: /yazi.php?y=... ile gelen istek, çalışmanın Tamga
@@ -242,6 +246,8 @@ $ozet    = alan($yazi, 'ozet', $lang);
 $anahtar = alan($yazi, 'anahtar', $lang);
 $metin   = alan($yazi, 'metin', $lang);
 $kaynakca= alan($yazi, 'kaynakca', $lang);
+/* Gövdeye yapıştırılmış özet ve kaynakça, ayrı alanlarla aynıysa bir kez basılır. */
+$metin   = tg_metin_tekrar_ayikla($metin, [$ozet, (string)tg_metin($yazi['ozet'] ?? ''), (string)tg_metin($yazi['ozet_en'] ?? '')], $kaynakca);
 $yazar   = (string)($yazi['yazar'] ?? tg_ayar('varsayilan_yazar', ''));
 $tarih   = (string)($yazi['tarih'] ?? '');
 $yil     = substr($tarih, 0, 4);
