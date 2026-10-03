@@ -814,6 +814,15 @@ document.documentElement.setAttribute('data-tema',t);}catch(e){}})();</script>
   @media(min-width:1280px){
     .yan-sag{align-self:start;font-family:var(--ui);font-size:var(--y-3)}
     .yan-sag.ys-yapisik{position:sticky;top:calc(var(--ust) + var(--b-1))}
+    /* Ray ekrana sığmıyorsa bütünü yapışmaz; bunun yerine İÇİNDEKİLER
+       rayın sonuna alınır ve tek başına yapışır. Metin okundukça sağ
+       sütun boş kalmaz, içindekiler okurla birlikte iner. Kendi
+       kaydırması vardır ama çubuğu görünmez; etkin başlık görünür tutulur. */
+    .yan-sag.ys-toc-yapisik{align-self:stretch;display:flex;flex-direction:column}
+    .yan-sag.ys-toc-yapisik > .ys-toc{order:99;position:sticky;top:calc(var(--ust) + var(--b-1));
+      max-height:calc(100vh - var(--ust) - 32px);overflow-y:auto;scrollbar-width:none;
+      margin-bottom:0;padding-bottom:0;border-bottom:0}
+    .yan-sag.ys-toc-yapisik > .ys-toc::-webkit-scrollbar{display:none}
   }
   /* Dar ekranda iki kenar sütunu da çizilmez. Parmak izi doğrulama aracı
      bu yüzden orada bırakılmaz: sayfanın altındaki betik, sütun
@@ -1103,6 +1112,10 @@ document.documentElement.setAttribute('data-tema',t);}catch(e){}})();</script>
      dizgeden gelir (.ust .d). Burada yalnızca yerleşimleri var. */
   .arac-oku{display:flex;gap:var(--b-1)}
   @media(max-width:1100px){ .arac-oku #okuModu{display:none} }
+  /* Yaslama okurun seçimidir ve varsayılan KAPALIDIR: tarayıcılar Türkçe
+     sözcükleri bölmediği için dar sütunda kelime aralıkları açılır.
+     Seçim tarayıcıda saklanır; geniş sütunda ve isteyende işe yarar. */
+  body.yasli .icerik p, body.yasli .icerik li, body.yasli .ozet p{text-align:justify;hyphens:auto;-webkit-hyphens:auto}
   @media(max-width:640px){ .arac-oku{display:none} }
 
   /* ---- Başlık ve künye satırı ---- */
@@ -1647,7 +1660,7 @@ document.documentElement.setAttribute('data-tema',t);}catch(e){}})();</script>
     .baski-kapak{page-break-after:always;break-after:page;
       min-height:calc(297mm - 37mm);display:flex;flex-direction:column}
     .baski-kapak .kpk-orta{flex:1 1 auto;display:flex;flex-direction:column;justify-content:center;
-      padding:6mm 0}
+      padding:3mm 0}
     .baski-kapak .kpk-tamga{width:26mm;height:26mm;margin:0 0 6mm}
     .baski-kapak h1{font-size:21pt;line-height:1.22;margin:0 0 4mm;max-width:150mm}
     .kpk-baslik-ozgun{font-family:var(--ui);font-size:10pt;color:#5c6675;margin:0 0 5mm;line-height:1.45}
@@ -1667,6 +1680,20 @@ document.documentElement.setAttribute('data-tema',t);}catch(e){}})();</script>
     .kpk-hakem b{display:block;font-size:7.6pt;letter-spacing:.12em;text-transform:uppercase;
       color:#5c6675;margin-bottom:2mm;font-weight:600}
     .kpk-hakem span{display:block;color:#5c6675;font-size:8pt;word-break:break-all}
+    .kpk-bilgi{max-width:155mm;margin:0 0 5mm;font-family:var(--ui)}
+    .kpk-bilgi > b{display:block;font-size:7.6pt;letter-spacing:.12em;text-transform:uppercase;
+      color:#5c6675;margin-bottom:2mm;font-weight:600}
+    .kpk-bilgi dl{display:grid;grid-template-columns:1fr 1fr;gap:0 8mm;margin:0;
+      border-top:.6pt solid #cfd4dc}
+    .kpk-bilgi dl > div{display:flex;gap:3mm;justify-content:space-between;align-items:baseline;
+      padding:.9mm 0;border-bottom:.6pt solid #e3e7ec;font-size:8.2pt;line-height:1.45;break-inside:avoid}
+    .kpk-bilgi dl > .kpk-genis{grid-column:1/-1}
+    .kpk-bilgi dt{color:#5c6675;flex:none}
+    .kpk-bilgi dd{margin:0;color:#111;font-weight:600;text-align:right;word-break:break-word}
+    .kpk-mini{width:4mm;height:4mm;vertical-align:-1mm;margin-right:1.5mm}
+    /* Metin iki yana yaslanır: A4 sütunu geniş olduğu için kelime aralıkları
+       ekrandaki dar sütundaki gibi açılmaz. */
+    .icerik p,.icerik li,.kpk-ozet,.ozet p{text-align:justify;hyphens:auto;-webkit-hyphens:auto}
     .kpk-alt{flex:none;border-top:.6pt solid #cfd4dc;padding-top:3mm;
       font-family:var(--ui);font-size:7.8pt;color:#5c6675;line-height:1.6}
 
@@ -1748,6 +1775,7 @@ ob_start(); ?>
 <span class="arac-oku">
   <button class="d d-kucuk" type="button" id="yaziKucult" title="<?= $L ? 'Smaller text' : 'Yazıyı küçült' ?>" aria-label="<?= $L ? 'Smaller text' : 'Yazıyı küçült' ?>">A-</button>
   <button class="d d-kucuk" type="button" id="yaziBuyut" title="<?= $L ? 'Larger text' : 'Yazıyı büyüt' ?>" aria-label="<?= $L ? 'Larger text' : 'Yazıyı büyüt' ?>">A+</button>
+  <button class="d d-kucuk" type="button" id="yaslaModu" aria-pressed="false" title="<?= $L ? 'Justify text' : 'Metni iki yana yasla' ?>" aria-label="<?= $L ? 'Justify text' : 'Metni iki yana yasla' ?>"><?= $L ? 'Justify' : 'Yasla' ?></button>
   <button class="d d-kucuk" type="button" id="okuModu" aria-pressed="false" title="<?= $L ? 'Reading mode' : 'Okuma modu' ?>"><?= $L ? 'Focus' : 'Odak' ?></button>
 </span>
 <?php
@@ -1829,7 +1857,6 @@ k_kabuk_yan('/yazilar.php', $MARKA, tg_marka_alt((bool)$L), (bool)$L, $L ? 'en' 
     </div>
 
     <div class="kpk-orta">
-      <img class="kpk-tamga" src="/k/tamga-512.png" alt="" width="104" height="104">
       <h1><?= esc($baslik) ?></h1>
       <?php if ($bsCeviriMi && trim((string)($yazi['baslik'] ?? '')) !== '' && trim((string)($yazi['baslik'] ?? '')) !== $baslik): ?>
       <p class="kpk-baslik-ozgun"><?= $L ? 'Original title' : 'Özgün başlık' ?><?= $bsOzgunAd !== '' ? ' (' . esc($bsOzgunAd) . ')' : '' ?>:
@@ -1852,6 +1879,27 @@ k_kabuk_yan('/yazilar.php', $MARKA, tg_marka_alt((bool)$L), (bool)$L, $L ? 'en' 
       <?php if (trim(strip_tags($ozet)) !== ''): ?>
       <div class="kpk-ozet"><b><?= $L ? 'Abstract' : 'Özet' ?></b><?= esc(mb_substr(trim(strip_tags($ozet)), 0, 1200, 'UTF-8')) ?></div>
       <?php endif; ?>
+
+      <?php /* MAKALE BİLGİSİ. Sayfadaki "Makale bilgisi" bloğunun kâğıttaki
+               karşılığı: aşama, erişim, lisans, tarih ve tamga aynı
+               satırlarla durur. Tamga burada büyük bir resim değil,
+               künyenin bir satırıdır; küçük işareti satırın başındadır. */ ?>
+      <div class="kpk-bilgi">
+        <b><?= $L ? 'Article info' : 'Makale bilgisi' ?></b>
+        <dl>
+          <div><dt><?= $L ? 'Review' : 'Değerlendirme' ?></dt><dd><?= esc(tg_asama_metni($asama, (bool)$L)) ?></dd></div>
+          <div><dt><?= $L ? 'Access' : 'Erişim' ?></dt><dd><?= $L ? 'Open Access' : 'Açık Erişim' ?></dd></div>
+          <div><dt><?= $L ? 'License' : 'Lisans' ?></dt><dd>CC BY 4.0</dd></div>
+          <div><dt><?= $L ? 'Published' : 'Yayın tarihi' ?></dt><dd><?= esc($bsGun($bsTarih['yayin'])) ?></dd></div>
+          <div><dt><?= esc($TAMGA_AD) ?></dt><dd><img class="kpk-mini" src="/k/tamga-512.png" alt="" width="16" height="16"><?= $bcid !== '' ? esc($bcid) : ($L ? 'not assigned' : 'verilmemiş') ?></dd></div>
+          <?php if ($doi !== ''): ?><div><dt>DOI</dt><dd><?= esc($doi) ?></dd></div><?php endif; ?>
+          <?php if ($bsOzgunAd !== ''): ?><div><dt><?= $L ? 'Language' : 'Kayıt dili' ?></dt><dd><?= esc($bsOzgunAd) ?></dd></div><?php endif; ?>
+          <?php if ($bsKod): ?><div class="kpk-genis"><dt><?= $L ? 'Field' : 'Bilim alanı' ?></dt><dd><?= esc(implode(' · ', array_map(fn($c) => al_yol($c, (bool)$L), $bsKod))) ?></dd></div><?php endif; ?>
+          <div><dt><?= $L ? 'Ethics approval' : 'Etik kurul' ?></dt><dd><?= esc(tg_etik_hal_ad($etikHal, (bool)$L)) ?></dd></div>
+          <?php if (($veri['beyan'] ?? '') !== ''): ?><div><dt><?= $L ? 'Data and code' : 'Veri ve kod' ?></dt><dd><?= esc(tg_veri_beyan_ad((string)$veri['beyan'], $L)) ?></dd></div><?php endif; ?>
+          <div><dt><?= $L ? 'Reviewers' : 'Hakem' ?></dt><dd><?= (int)$bsHakem ?></dd></div>
+        </dl>
+      </div>
 
       <div class="kpk-atif">
         <b><?= $L ? 'How to cite' : 'Atıf' ?></b>
@@ -1885,7 +1933,23 @@ k_kabuk_yan('/yazilar.php', $MARKA, tg_marka_alt((bool)$L), (bool)$L, $L ? 'en' 
       <br><?= esc($TAMGA_AD) ?>: <?= $bcid !== '' ? esc($bcid) : ($L ? 'not assigned' : 'verilmemiş') ?>
       <?php if ($doi !== ''): ?> &nbsp;·&nbsp; DOI: <?= esc($doi) ?><?php endif; ?>
       &nbsp;·&nbsp; <?= $L ? 'Licence' : 'Lisans' ?>: CC BY 4.0
+      &nbsp;·&nbsp; <?= $L ? 'Downloaded' : 'İndirilme' ?>: <span data-indirme><?= esc($bsGun(date('Y-m-d'))) ?></span>
     </div>
+    <?php /* İNDİRİLME TARİHİ yazdırma anında, okurun kendi saatiyle yazılır;
+             sunucudaki tarih yalnızca betik çalışmazsa kalan yedektir. */ ?>
+    <script>
+    (function(){
+      var L = <?= $L ? 'true' : 'false' ?>;
+      function yaz(){
+        var d = new Date(), el = document.querySelectorAll('[data-indirme]');
+        var s; try { s = d.toLocaleString(L ? 'en-GB' : 'tr-TR', {day:'numeric', month:'long', year:'numeric', hour:'2-digit', minute:'2-digit'}); }
+               catch (e) { s = d.toISOString().slice(0, 16).replace('T', ' '); }
+        for (var i = 0; i < el.length; i++) el[i].textContent = s;
+      }
+      window.addEventListener('beforeprint', yaz);
+      yaz();
+    })();
+    </script>
   </div>
 
   <div class="baski baski-bas">
@@ -3393,7 +3457,11 @@ document.querySelectorAll('.kopya').forEach(function(b){
       /* ÖLÇÜT PİKSEL DEĞİL: ray çizildi mi. Eşik biçemde tek yerde
          yazılıdır; betik onu yinelerse ikisi bir gün ayrışır. */
       var cizildi = ray.offsetParent !== null;
-      ray.classList.toggle('ys-yapisik', cizildi && ray.offsetHeight<=yer);
+      ray.classList.remove('ys-yapisik','ys-toc-yapisik');
+      var sigar = cizildi && ray.offsetHeight<=yer;
+      ray.classList.toggle('ys-yapisik', sigar);
+      /* Sığmıyorsa yalnız içindekiler yapışır. */
+      ray.classList.toggle('ys-toc-yapisik', cizildi && !sigar && !!ray.querySelector('.ys-toc'));
     }
     tart();
     window.addEventListener('resize',function(){ clearTimeout(zaman); zaman=setTimeout(tart,150); });
@@ -3426,6 +3494,11 @@ document.querySelectorAll('.kopya').forEach(function(b){
       var akt=null;
       basliklar.forEach(function(h){ if(gorunen[h.id]&&!akt) akt=h.id; });
       linkler.forEach(function(l){ l.classList.toggle('etkin', l.getAttribute('data-hid')===akt); });
+      var ek = nav.querySelector('.tocl.etkin');
+      if(ek && nav.scrollHeight > nav.clientHeight){
+        var nt = ek.getBoundingClientRect().top - nav.getBoundingClientRect().top + nav.scrollTop;
+        if(nt < nav.scrollTop || nt > nav.scrollTop + nav.clientHeight - 40) nav.scrollTop = Math.max(0, nt - 60);
+      }
       /* İçinde bulunulan bölümün kümesi açılır, ötekiler kapanır —
          okur elle açtıysa dokunulmaz. */
       if(akt){
@@ -3507,6 +3580,10 @@ document.querySelectorAll('.kopya').forEach(function(b){
   function modUygula(on){govde.classList.toggle('oku',on);if(bO)bO.setAttribute('aria-pressed',on?'true':'false');yaz('okuModu',on?'1':'0');}
   if(bO)bO.addEventListener('click',function(){modUygula(!govde.classList.contains('oku'));});
   if(oku('okuModu','0')==='1') modUygula(true);
+  var bY=document.getElementById('yaslaModu');
+  function yasUygula(on){govde.classList.toggle('yasli',on);if(bY)bY.setAttribute('aria-pressed',on?'true':'false');yaz('yaslaModu',on?'1':'0');}
+  if(bY)bY.addEventListener('click',function(){yasUygula(!govde.classList.contains('yasli'));});
+  if(oku('yaslaModu','0')==='1') yasUygula(true);
 })();
 </script>
 <script>
