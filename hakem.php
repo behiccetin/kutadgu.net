@@ -280,6 +280,10 @@ $S = json_encode([
   'nitUyari'  => k_c('Raporunuz her hâlükârda yayımlanır; ancak şu ölçütleri karşılamadıkça onay sayımına ve hakemlik kaydınıza katılmaz:', 'Your report will be published either way, but it will not be counted towards approval or towards your reviewing record unless it meets these criteria:'),
   'nitGerekce'=> k_c('en az %d karakter gerekçe (şu an %c)', 'at least %d characters of reasoning (currently %c)'),
   'nitIsaret' => k_c('metinde notlandırılmış en az %d yer (şu an %c)', 'at least %d passages marked in the text with a note (currently %c)'),
+  'nitAnket'  => k_c('Kabul ya da küçük revizyon dediğiniz için, aşağıdaki "Dizin ve çeyreklik" bölümünde en az bir dizinin değerlendirmesini açıp yanıtlayın', 'Because you chose accept or minor revision, open and answer at least one index assessment in the index section below'),
+  'nitOnay'   => k_c('Raporunuz şu hâliyle onay sayımına katılmayacak (yukarıdaki kutuya bakın). Yine de göndermek için düğmeye bir kez daha basın.', 'As it stands your report will not count towards approval (see the box above). To send it anyway, press the button once more.'),
+  'nitYineGonder' => k_c('Yine de gönder', 'Send anyway'),
+  'nitEksikBas' => k_c('Eksik kalan:', 'Still missing:'),
   'nitSonrasiTamam' => k_c('Raporunuz kaydedildi ve asgari değerlendirme ölçütlerini karşılıyor. Onay sayımına ve hakemlik kaydınıza katılıyor.', 'Your report has been recorded and meets the minimum assessment criteria. It is counted towards approval and towards your reviewing record.'),
   'nitSonrasiEksik' => k_c('Raporunuz kaydedildi ve adınızla yayımlanıyor; ancak asgari değerlendirme ölçütlerini karşılamadığı için onay sayımına ve hakemlik kaydınıza katılmıyor. Gerekçe çalışmanın sayfasında yazılıdır.', 'Your report has been recorded and is published under your name, but it does not meet the minimum assessment criteria: it is not counted towards approval or towards your reviewing record. The reason is stated on the page of the work.'),
 ], JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
@@ -474,13 +478,21 @@ $betik = <<<JS
   }
 
   /* ---- Rapor nitelik göstergesi: hakem gönderMEDEN önce görür ---- */
-  function niteligiGuncelle(){
-    var kutu=\$('nitelik'); if(!kutu)return;
+  function nitEksikler(){
     var uzun=raporMetni().length;
     var isaret=notlar.filter(function(n){return n.not&&n.not.trim();}).length;
     var eksik=[];
     if (uzun<ESIK.karakter) eksik.push(S.nitGerekce.replace('%d',ESIK.karakter).replace('%c',uzun));
     if (isaret<ESIK.isaret) eksik.push(S.nitIsaret.replace('%d',ESIK.isaret).replace('%c',isaret));
+    var kv=document.querySelector('input[name=karar]:checked');
+    if (kv&&(kv.value==='kabul'||kv.value==='kucuk')&&Object.keys(ANKET).length===0) eksik.push(S.nitAnket);
+    return eksik;
+  }
+  var NIT_ONAY=false;
+  function niteligiGuncelle(){
+    NIT_ONAY=false; var gb=\$('gonder'); if(gb&&gb.getAttribute('data-ad')) gb.textContent=gb.getAttribute('data-ad');
+    var kutu=\$('nitelik'); if(!kutu)return;
+    var eksik=nitEksikler();
     if (!eksik.length){ kutu.className='nitelik-kutu kutu kutu-yes'; kutu.innerHTML='<b>'+esc(S.nitBas)+'</b> '+esc(S.nitTamam); return; }
     kutu.className='nitelik-kutu kutu kutu-kut';
     var h='<b>'+esc(S.nitBas)+'</b> '+esc(S.nitUyari)+'<ul>';
@@ -597,7 +609,9 @@ $betik = <<<JS
   function endeksGoster(){ var v=document.querySelector('input[name=karar]:checked');
     \$('endeksKart').classList.toggle('gizli', !(v&&(v.value==='kabul'||v.value==='kucuk'))); }
   Array.prototype.forEach.call(document.querySelectorAll('input[name=karar]'),function(r){
-    r.addEventListener('change',endeksGoster);});
+    r.addEventListener('change',function(){endeksGoster();niteligiGuncelle();});});
+  ['change','click','input'].forEach(function(o){
+    \$('endeksKart').addEventListener(o,function(){setTimeout(niteligiGuncelle,0);});});
 
   \$('gonder').addEventListener('click',function(){
     var rapor=\$('rapor').value.trim();
@@ -622,6 +636,15 @@ $betik = <<<JS
         var sk=document.getElementById('ez-'+ak.secimEksik); if(sk)sk.scrollIntoView({block:'center',behavior:'smooth'});return;}
       if (ak.eksik){m.textContent=S.anketEksik;m.className='form-msj err';
         var ek=document.getElementById('ez-'+ak.eksik); if(ek)ek.scrollIntoView({block:'center',behavior:'smooth'});return;}
+    }
+    var nitE=nitEksikler();
+    if (nitE.length && !NIT_ONAY) {
+      NIT_ONAY=true;
+      var gb2=\$('gonder'); if(!gb2.getAttribute('data-ad')) gb2.setAttribute('data-ad',gb2.textContent);
+      gb2.textContent=S.nitYineGonder;
+      m.textContent=S.nitOnay; m.className='form-msj err';
+      var nb=\$('nitelik'); if(nb) nb.scrollIntoView({block:'center',behavior:'smooth'});
+      return;
     }
     \$('gonder').disabled=true;m.textContent=S.gonderiliyor;m.className='form-msj';
     var endeks=ak.liste.map(function(a){
@@ -648,7 +671,9 @@ $betik = <<<JS
           if(nk){
             if(d.nitelik===false){
               nk.className='nitelik-kutu kutu kutu-kut';
-              nk.innerHTML='<b>'+esc(S.nitBas)+'</b> '+esc(S.nitSonrasiEksik);
+              var kodlar={gerekce:S.nitGerekce.replace(/ \(.*\$/,''),isaret:S.nitIsaret.replace(/ \(.*\$/,''),anket:S.nitAnket};
+              var li='';(d.eksik||[]).forEach(function(c){ if(kodlar[c]) li+='<li>'+esc(kodlar[c].replace('%d',c==='gerekce'?ESIK.karakter:ESIK.isaret))+'</li>'; });
+              nk.innerHTML='<b>'+esc(S.nitBas)+'</b> '+esc(S.nitSonrasiEksik)+(li?'<br><b>'+esc(S.nitEksikBas)+'</b><ul>'+li+'</ul>':'');
             } else {
               nk.className='nitelik-kutu kutu kutu-yes';
               nk.innerHTML='<b>'+esc(S.nitBas)+'</b> '+esc(S.nitSonrasiTamam);
