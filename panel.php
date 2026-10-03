@@ -5640,7 +5640,7 @@ $betik = <<<JS
   }
 
   /* ================= YÖNETİM (yalnızca baş editör) ================= */
-  var YON_BAS = [], YON_YAZ = [];
+  var YON_BAS = [], YON_YAZ = [], YON_ARSIV_GOSTER = false;
 
   function yonetimKur(){
     if(!\$('yonBasListe') || yonetimKur.kuruldu) return;
@@ -5685,7 +5685,9 @@ $betik = <<<JS
        başvuru bir KAYITtır; bekleyen bir başvuru bir İŞtir ve iş kaydın
        altında duramaz. */
     var ybQ = ((\$('ybAra')||{}).value || '').toLowerCase().trim();
+    var arsivSayi = YON_BAS.filter(function(b){ return !!b.arsiv; }).length;
     var suzulmus = YON_BAS.filter(function(b){
+      if(b.arsiv && !YON_ARSIV_GOSTER) return false;
       if(!ybQ) return true;
       var bv = b.basvuran || {};
       return ((bv.ad||'') + ' ' + (bv.kurum||'') + ' ' + (bv.eposta||'') + ' ' + (b.makale_baslik||''))
@@ -5706,6 +5708,13 @@ $betik = <<<JS
       + (gizlenen > 0
           ? (EN ? (' · ' + gizlenen + ' more not shown; use the search box above')
                 : (' · ' + gizlenen + ' tanesi gösterilmiyor, yukarıdan arayın'))
+          : '')
+      + (arsivSayi > 0
+          ? ' · <button type="button" class="d d-ikinci d-kucuk" id="ybArsivDgm">'
+            + (YON_ARSIV_GOSTER
+                ? (EN ? 'Hide archived (' + arsivSayi + ')' : 'Arşivdekileri gizle (' + arsivSayi + ')')
+                : (EN ? 'Show archived (' + arsivSayi + ')' : 'Arşivdekileri göster (' + arsivSayi + ')'))
+            + '</button>'
           : '')
       + '</p>';
 
@@ -5759,6 +5768,10 @@ $betik = <<<JS
       }
       if(dr === 'ret' && b.not)
         h += '<p class="pn-ack"><b>' + (EN?'Reason':'Ret gerekçesi') + ':</b> ' + esc(String(b.not)) + '</p>';
+      if(dr !== 'bekliyor')
+        h += '<div class="d-kume" style="margin-top:var(--b-3)">'
+           + '<button type="button" class="d d-ikinci d-kucuk" data-arsiv="' + esc(b.id) + '" data-ars="' + (b.arsiv ? '0' : '1') + '">'
+           + (b.arsiv ? (EN?'Restore from archive':'Arşivden çıkar') : (EN?'Archive (hide from list)':'Arşivle (listeden gizle)')) + '</button></div>';
       h += '</div></details>';
     });
     kutu.innerHTML = h + '</div>';
@@ -5772,6 +5785,18 @@ $betik = <<<JS
                 + (EN ? 'Access password: ' : 'Erişim şifresi: ') + (b.yazar_sifre||'') + '\\n'
                 + (EN ? 'E mail: ' : 'E-posta: ') + (bv.eposta||'');
       kopyaDugme(el, metin);
+    });
+    var ybAd = \$('ybArsivDgm');
+    if(ybAd) ybAd.addEventListener('click', function(){ YON_ARSIV_GOSTER = !YON_ARSIV_GOSTER; yonBasvuruCiz(); });
+    Array.prototype.forEach.call(kutu.querySelectorAll('[data-arsiv]'), function(dg){
+      dg.addEventListener('click', function(){
+        var ars = dg.getAttribute('data-ars') === '1';
+        dg.disabled = true;
+        api('/yonetim/basvuru-arsivle', {id: dg.getAttribute('data-arsiv'), arsiv: ars}).then(function(r){
+          if(r && r.ok){ yonBasvuruYukle(); }
+          else { dg.disabled = false; window.alert((r && r.hata) || S.baglanti); }
+        }).catch(function(){ dg.disabled = false; });
+      });
     });
     Array.prototype.forEach.call(kutu.querySelectorAll('[data-kabul]'), function(dg){
       dg.addEventListener('click', function(){

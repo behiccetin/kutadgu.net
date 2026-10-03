@@ -6226,6 +6226,28 @@ if ($yol === '/yonetim/basvurular' && $metod === 'GET') {
     cikti(['ok' => true, 'basvurular' => $b]);
 }
 
+/* BAŞVURUYU ARŞİVLE / GERİ AL (yönetici). SİLMEZ: kayıt dosyada durur,
+   yalnızca panelde varsayılan listeden gizlenir ve "arşivdekileri göster"
+   ile geri getirilir. Karar bekleyen başvuru arşivlenemez; bekleyen bir
+   başvuru bir iştir ve gizlenirse unutulur. */
+if ($yol === '/yonetim/basvuru-arsivle' && $metod === 'POST') {
+    yonetim_yazma_gerek();
+    $g = govde_json(); if (!$g) $g = $_POST;
+    $id = (string)($g['id'] ?? '');
+    $ars = !empty($g['arsiv']);
+    $b = oku_json('basvurular.json', []); if (!is_array($b)) $b = [];
+    $bi = -1;
+    foreach ($b as $i => $e) { if ((string)($e['id'] ?? '') === $id) { $bi = $i; break; } }
+    if ($bi < 0) cikti(['ok' => false, 'hata' => 'Başvuru bulunamadı.'], 404);
+    if ($ars && (string)($b[$bi]['durum'] ?? 'bekliyor') === 'bekliyor') {
+        cikti(['ok' => false, 'hata' => 'Karar bekleyen başvuru arşivlenemez. Önce karara bağlayın.'], 409);
+    }
+    if ($ars) { $b[$bi]['arsiv'] = true; $b[$bi]['arsiv_tarih'] = date('c'); }
+    else { unset($b[$bi]['arsiv'], $b[$bi]['arsiv_tarih']); }
+    yaz_json('basvurular.json', $b);
+    cikti(['ok' => true, 'arsiv' => $ars]);
+}
+
 /* BAŞVURU KARARI (yönetici): kabul -> makale + yazar erişimi aç; ret -> gerekçe */
 if ($yol === '/yonetim/basvuru-karar' && $metod === 'POST') {
     yonetim_yazma_gerek();
