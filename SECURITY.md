@@ -12,7 +12,7 @@ sunucuda yayımlanmaz, yalnızca depoda durur.
 Bulduğunuz şeyi herkese açık bir yerde (depo konusu, sosyal ağ, blog)
 yazmadan önce bize yazın. İki yol var:
 
-- **E-posta:** `cbehic@gmail.com`
+- **E-posta:** `editor@kutadgu.net`
   Sistemin yapılandırmasındaki iletişim adresidir; aynı adres OAI-PMH
   `Identify` yanıtında yönetici adresi olarak da yayımlanır.
 - **İletişim sayfası:** `/iletisim.php`
@@ -176,7 +176,7 @@ published on the site, it lives only in the repository.
 Before writing about what you found in a public place (a repository
 issue, a social network, a blog), write to us. There are two routes:
 
-- **E-mail:** `cbehic@gmail.com`
+- **E-mail:** `editor@kutadgu.net`
   This is the contact address held in the system's configuration; the
   same address is published as the administrator address in the OAI-PMH
   `Identify` response.

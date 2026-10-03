@@ -12,6 +12,7 @@ All notable changes to Kutadgu are recorded here. Versions follow [Semantic Vers
 - `varsayilan_yazar` setting for records whose author field was left empty.
 
 ### Changed
+- Public contact address is now editor@kutadgu.net (OAI-PMH `Identify`, security reports) instead of a personal address.
 - The site footer now names the founding board and links to the source code, instead of naming one person.
 - Structured data (schema.org) lists the founding board as founders, read from the founding record.
 - The declaration is written in the voice of the founding board; the clause protecting names now protects the names of the founding board.

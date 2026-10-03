@@ -124,7 +124,7 @@ return [
        DEĞİŞTİRMELİDİR. Boş bırakılırsa Identify yanıtında adres alanı
        hiç basılmaz; teknik olarak eksik bir yanıt olur ve bazı dizinler
        kaydı almaz. */
-    'iletisim_eposta' => 'cbehic@gmail.com',
+    'iletisim_eposta' => 'editor@kutadgu.net', /* Cloudflare Email Routing ile yayın yönetimine yönlenir (3 Ekim 2026) */
 
     /* ---- Kalıcı kimlik (Tamga) ----
        Tamga: Türk boylarının damgası; bir eserin kalıcı ve
