@@ -5325,8 +5325,6 @@ function yazar_dizesi(array $yazarlar): string {
 /* YAZAR BAŞVURUSU (herkese açık) - makale gönderme başvurusu */
 if ($yol === '/yazar-basvuru' && $metod === 'POST') {
     $g = govde_json(); if (!$g) $g = $_POST;
-    $ipk = 'basvuru:' . substr(hash('sha256', ip_al()), 0, 16);
-    if (kotu_say($ipk) > 12) cikti(['ok' => false, 'hata' => 'Çok fazla başvuru denemesi. Lütfen biraz sonra tekrar deneyin.'], 429);
     /* =================================================================
        GÖNDERİM HESAP İSTER
 
@@ -5353,6 +5351,17 @@ if ($yol === '/yazar-basvuru' && $metod === 'POST') {
             'Çalışma göndermek için önce hesabınızı açmanız gerekiyor. Yazdıklarınız tarayıcınızda duruyor; hesabınızı açıp bu sayfaya döndüğünüzde olduğu gibi geri gelecek.',
             'You need to open an account before submitting a work. What you have written is kept in your browser and will come back unchanged when you return to this page with an account.')], 401);
     }
+    /* HIZ SINIRI HESABA GÖRE TUTULUR, ORTAK İNTERNET ADRESİNE GÖRE DEĞİL.
+       ÖLÇÜLEN KUSUR — 3 Ekim 2026. Sayaç yalnız IP'ye bağlıydı, eşik 12'ydi,
+       pencere iki saatti ve hatalı denemeler de sayılıyordu. Aynı kurum
+       ağından (ortak IP) birkaç hoca denediğinde HEPSİ iki saat kilitleniyordu;
+       gönderim artık hesap istediği için sınırın hesaba bağlanması yeterli
+       ve adildir. Hesap + IP çifti anahtar olur: bir kişinin hatası
+       başkasını kilitlemez, kimliksiz istekler zaten yukarıda 401 alır.
+       Eşik 12'den 30'a çıktı: form çok adımlıdır ve düzeltme
+       denemeleri de sayılır. */
+    $ipk = 'basvuru:' . substr(hash('sha256', mb_strtolower((string)($bvBen['eposta'] ?? ''), 'UTF-8') . '|' . ip_al()), 0, 16);
+    if (kotu_say($ipk) > 30) cikti(['ok' => false, 'hata' => 'Çok fazla başvuru denemesi. Lütfen biraz sonra tekrar deneyin.'], 429);
     $temiz = fn($s, $n) => mb_substr(trim(preg_replace('#<[^>]*>#', '', (string)$s)), 0, $n);
     $bUnvan = $temiz($g['unvan'] ?? '', 60);
     $bAd = $temiz($g['ad'] ?? '', 120);
